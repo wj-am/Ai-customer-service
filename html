@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>第五人格 · 充值场景客服分析报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #0f1117;
+      color: #e0e6f0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ===== 左侧导航 ===== */
+    .sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: #161b27;
+      border-right: 1px solid #252d40;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid #252d40;
+    }
+
+    .sidebar-logo .game-tag {
+      font-size: 11px;
+      color: #5a6a8a;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-logo .title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #c8d8f8;
+    }
+
+    .sidebar-logo .subtitle {
+      font-size: 11px;
+      color: #4a5a7a;
+      margin-top: 4px;
+    }
+
+    .nav-group-label {
+      padding: 16px 20px 6px;
+      font-size: 10px;
+      color: #3a4a6a;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #6a7a9a;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background: #1e2535;
+      color: #a0b4d8;
+    }
+
+    .nav-item.active {
+      background: #1a2540;
+      color: #6aa3ff;
+      border-left: 3px solid #6aa3ff;
+    }
+
+    .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 20px;
+      border-top: 1px solid #252d40;
+      font-size: 11px;
+      color: #3a4a6a;
+    }
+
+    /* ===== 主内容区 ===== */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ===== 通用标题 ===== */
+    .page-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #252d40;
+    }
+
+    .page-header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #d0e0ff;
+    }
+
+    .page-header p {
+      font-size: 12px;
+      color: #4a5a7a;
+      margin-top: 4px;
+    }
+
+    /* ===== 数据卡片 ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: #161b27;
+      border: 1px solid #252d40;
+      border-radius: 10px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+
+    .kpi-card.blue::before { background: linear-gradient(90deg, #3a7bd5, #6aa3ff); }
+    .kpi-card.green::before { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+    .kpi-card.orange::before { background: linear-gradient(90deg, #e67e22, #f39c12); }
+    .kpi-card.purple::before { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+    .kpi-card.red::before { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+    .kpi-card.teal::before { background: linear-gradient(90deg, #16a085, #1abc9c); }
+
+    .kpi-label {
+      font-size: 11px;
+      color: #5a6a8a;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: #d0e0ff;
+      line-height: 1;
+    }
+
+    .kpi-value span {
+      font-size: 13px;
+      font-weight: 400;
+      color: #6a7a9a;
+      margin-left: 2px;
+    }
+
+    .kpi-note {
+      font-size: 11px;
+      color: #3a4a6a;
+      margin-top: 6px;
+    }
+
+    /* ===== 图表容器 ===== */
+    .chart-row {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .chart-row.col2 { grid-template-columns: 1fr 1fr; }
+    .chart-row.col3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    .chart-card {
+      background: #161b27;
+      border: 1px solid #252d40;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .chart-card h3 {
+      font-size: 13px;
+      color: #8a9ab8;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .chart-box { width: 100%; height: 240px; }
+
+    /* ===== 注释块 ===== */
+    .note-block {
+      background: #1a2035;
+      border: 1px solid #2a3a5a;
+      border-left: 3px solid #4a7adf;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #7a9ac8;
+      margin-bottom: 20px;
+      line-height: 1.7;
+    }
+
+    .note-block.warn {
+      border-left-color: #e67e22;
+      background: #1e1a10;
+      color: #c8a060;
+    }
+
+    /* ===== 表格 ===== */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .data-table th {
+      background: #1e2535;
+      color: #6a8ab8;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 500;
+      border-bottom: 1px solid #252d40;
+    }
+
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #1e2535;
+      color: #a0b0cc;
+    }
+
+    .data-table tr:hover td { background: #1a2030; }
+
+    .data-table .highlight { color: #6aa3ff; font-weight: 600; }
+    .data-table .warn-text { color: #e67e22; }
+    .data-table .good-text { color: #2ecc71; }
+
+    /* ===== 优先级徽章 ===== */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge.p0 { background: #3d1212; color: #e74c3c; border: 1px solid #5a1a1a; }
+    .badge.p1 { background: #3d2a10; color: #f39c12; border: 1px solid #5a3a15; }
+    .badge.p2 { background: #1a2d1a; color: #2ecc71; border: 1px solid #1e3d1e; }
+
+    /* ===== 场景卡片 ===== */
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .scene-card {
+      background: #161b27;
+      border: 1px solid #252d40;
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .scene-card:hover { border-color: #3a5a9a; }
+
+    .scene-card.selected { border-color: #6aa3ff; background: #1a2540; }
+
+    .scene-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #c0d0f0;
+      margin-bottom: 6px;
+    }
+
+    .scene-count {
+      font-size: 20px;
+      font-weight: 700;
+      color: #6aa3ff;
+    }
+
+    .scene-count span { font-size: 12px; color: #5a6a8a; margin-left: 2px; }
+
+    .scene-pct {
+      font-size: 11px;
+      color: #5a6a8a;
+      margin-top: 2px;
+    }
+
+    .progress-bar-wrap {
+      height: 4px;
+      background: #252d40;
+      border-radius: 2px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #3a6ad5, #6aa3ff);
+    }
+
+    /* ===== 问题列表 ===== */
+    .issue-list { margin-bottom: 20px; }
+
+    .issue-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1e2535;
+    }
+
+    .issue-rank {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #252d40;
+      color: #6a7a9a;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .issue-rank.top { background: #2a3a6a; color: #6aa3ff; }
+
+    .issue-name { flex: 1; font-size: 12px; color: #a0b0cc; }
+
+    .issue-bar-wrap {
+      width: 100px;
+      height: 4px;
+      background: #252d40;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .issue-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3a6ad5, #6aa3ff);
+      border-radius: 2px;
+    }
+
+    .issue-pct { font-size: 12px; color: #6aa3ff; width: 38px; text-align: right; }
+
+    /* ===== 优化建议卡片 ===== */
+    .suggest-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .suggest-card {
+      background: #161b27;
+      border: 1px solid #252d40;
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .suggest-card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #c0d0f0;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .suggest-card ul {
+      padding-left: 16px;
+      font-size: 12px;
+      color: #7a8aaa;
+      line-height: 2;
+    }
+
+    .suggest-card .owner {
+      font-size: 11px;
+      color: #3a4a6a;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #252d40;
+    }
+
+    /* ===== 分隔 ===== */
+    .section-label {
+      font-size: 11px;
+      color: #3a4a6a;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    /* ===== 滚动条 ===== */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #252d40; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== 左侧导航 ===== -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-tag">Identity V · h55</div>
+    <div class="title">充值场景客服分析</div>
+    <div class="subtitle">数据周期：2025年3月</div>
+  </div>
+
+  <div class="nav-group-label">报告模块</div>
+
+  <div class="nav-item active" onclick="switchPage('overview', this)">
+    <span class="icon">📊</span> 整体概览
+  </div>
+  <div class="nav-item" onclick="switchPage('scene', this)">
+    <span class="icon">📦</span> 场景分析
+  </div>
+  <div class="nav-item" onclick="switchPage('core', this)">
+    <span class="icon">⚠️</span> 核心问题
+  </div>
+  <div class="nav-item" onclick="switchPage('ticket', this)">
+    <span class="icon">📋</span> 工单专项
+  </div>
+  <div class="nav-item" onclick="switchPage('suggest', this)">
+    <span class="icon">✅</span> 优化建议
+  </div>
+
+  <div class="sidebar-footer">
+    数据截止 2025.03.29<br/>
+    清洗范围 02.23–03.23
+  </div>
+</aside>
+
+<!-- ===== 主内容区 ===== -->
+<main class="main">
+
+  <!-- ========== 页面1：整体概览 ========== -->
+  <section class="page active" id="page-overview">
+    <div class="page-header">
+      <h1>整体概览</h1>
+      <p>3月服务数据（截止29号）· 第五人格 h55 · 全场景</p>
+    </div>
+
+    <div class="section-label">核心 KPI</div>
+    <div class="kpi-grid">
+      <div class="kpi-card blue">
+        <div class="kpi-label">总服务量</div>
+        <div class="kpi-value">406,255<span>条</span></div>
+        <div class="kpi-note">3月全渠道累计</div>
+      </div>
+      <div class="kpi-card green">
+        <div class="kpi-label">智能解决占比</div>
+        <div class="kpi-value">75.00<span>%</span></div>
+        <div class="kpi-note">约 304,691 条智能解决</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label">人工服务量</div>
+        <div class="kpi-value">41,426<span>条</span></div>
+        <div class="kpi-note">人工服务占比 10.20%</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label">整体 FCR</div>
+        <div class="kpi-value">81.68<span>%</span></div>
+        <div class="kpi-note">人工 FCR 79.39%</div>
+      </div>
+      <div class="kpi-card teal">
+        <div class="kpi-label">好评率</div>
+        <div class="kpi-value">78.79<span>%</span></div>
+        <div class="kpi-note">满意度评价</div>
+      </div>
+      <div class="kpi-card red">
+        <div class="kpi-label">提单比 / 转单率</div>
+        <div class="kpi-value">14.59<span>%</span></div>
+        <div class="kpi-note">人工无法一次解决转工单</div>
+      </div>
+    </div>
+
+    <div class="chart-row col2">
+      <div class="chart-card">
+        <h3>服务量构成</h3>
+        <div class="chart-box" id="chart-service-pie"></div>
+      </div>
+      <div class="chart-card">
+        <h3>关键指标一览</h3>
+        <div class="chart-box" id="chart-kpi-bar"></div>
+      </div>
+    </div>
+
+    <div class="note-block">
+      💡 <strong>数据说明</strong>：3月整体服务量超40万，智能解决占比达75%，人工服务占比仅10.20%，但仍有约41,426条进入人工；转单率14.59%，说明人工仍有相当比例无法一次性解决，需进一步提单处理。
+    </div>
+
+    <div class="section-label" style="margin-top:4px;">本次分析数据说明</div>
+    <div class="chart-card">
+      <h3>充值场景专项数据范围（清洗数据）</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>项目</th>
+            <th>说明</th>
+            <th>备注</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>数据时间范围</td>
+            <td class="highlight">2月23日 — 3月23日</td>
+            <td>约一个月跨度，含2月末活动期</td>
+          </tr>
+          <tr>
+            <td>充值场景人工对话总量</td>
+            <td class="highlight">66,231 条</td>
+            <td>清洗前全量，含噪声数据</td>
+          </tr>
+          <tr>
+            <td>清洗后有效分析样本</td>
+            <td class="highlight">4,293 条</td>
+            <td>充值问题有效样本</td>
+          </tr>
+          <tr>
+            <td>全场景工单总量（同期）</td>
+            <td class="highlight">4,066 条</td>
+            <td>全场景工单</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ========== 页面2：场景分析 ========== -->
+  <section class="page" id="page-scene">
+    <div class="page-header">
+      <h1>场景分析</h1>
+      <p>基于清洗后 4,293 条有效样本 · 六大充值场景分布与 TOP 问题</p>
+    </div>
+
+    <div class="section-label">场景分布（点击查看详细问题）</div>
+    <div class="scene-grid" id="scene-grid">
+      <!-- JS 渲染 -->
+    </div>
+
+    <div class="chart-row col2">
+      <div class="chart-card">
+        <h3>六大场景占比</h3>
+        <div class="chart-box" id="chart-scene-pie"></div>
+      </div>
+      <div class="chart-card">
+        <h3>场景问题量对比</h3>
+        <div class="chart-box" id="chart-scene-bar"></div>
+      </div>
+    </div>
+
+    <div class="section-label" id="detail-label">场景 TOP 问题详情</div>
+    <div class="chart-card" id="scene-detail-card">
+      <h3 id="detail-title">点击上方场景卡片查看详情</h3>
+      <div id="detail-content" style="color:#5a6a8a;font-size:12px;padding:8px 0;">请选择一个场景</div>
+    </div>
+  </section>
+
+  <!-- ========== 页面3：核心问题 ========== -->
+  <section class="page" id="page-core">
+    <div class="page-header">
+      <h1>核心问题专项分析</h1>
+      <p>贯穿多场景的结构性问题，影响大、需优先关注</p>
+    </div>
+
+    <div class="note-block warn">
+      ⚠️ <strong>关于优惠券问题说明</strong>：本次清洗数据（2月23日—3月23日）期间，2月上线了7折卡限时活动，导致优惠券相关问题在各场景中占比异常偏高。由于该活动属一次性运营行为，后续不再复刻，预计问题量将显著回落，<strong>本次不列为高优先级优化项</strong>，建议制定活动上线标准预案。
+    </div>
+
+    <!-- P0 问题 -->
+    <div class="section-label">🔴 P0 优先级问题</div>
+    <div class="chart-row col2">
+      <div class="chart-card">
+        <h3>① 账号风控 / 无法充值</h3>
+        <div class="issue-list">
+          <div class="issue-item">
+            <div class="issue-rank top">1</div>
+            <div class="issue-name">风控触发 · 账号被限制充值</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
+            <div class="issue-pct">~37%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank top">2</div>
+            <div class="issue-name">申诉流程不清晰 · 用户无从下手</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:65%"></div></div>
+            <div class="issue-pct">~24%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank">3</div>
+            <div class="issue-name">充值页面卡死 / 加载异常</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:54%"></div></div>
+            <div class="issue-pct">~20%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank">4</div>
+            <div class="issue-name">渠道服充值异常</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:35%"></div></div>
+            <div class="issue-pct">~13%</div>
+          </div>
+        </div>
+        <div class="note-block" style="margin-bottom:0;font-size:11px;">
+          用户体验损伤大，风控申诉链路长，人工处理成本高，需优化申诉引导话术及自助流程。
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>② 货币 / 回声真实未到账</h3>
+        <div class="issue-list">
+          <div class="issue-item">
+            <div class="issue-rank top">1</div>
+            <div class="issue-name">充值成功但游戏内货币未到账</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
+            <div class="issue-pct">~28%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank top">2</div>
+            <div class="issue-name">回声真实发放延迟 / 未发放</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:75%"></div></div>
+            <div class="issue-pct">~21%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank">3</div>
+            <div class="issue-name">充值不计入氪条 / 累充活动</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:39%"></div></div>
+            <div class="issue-pct">~11%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank">4</div>
+            <div class="issue-name">核查流程繁琐 · 用户催单多</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:30%"></div></div>
+            <div class="issue-pct">~8%</div>
+          </div>
+        </div>
+        <div class="note-block" style="margin-bottom:0;font-size:11px;">
+          直接影响用户资损感知，投诉风险高；核查链路可通过话术标准化 + 自助查单工具降低人工处理量。
+        </div>
+      </div>
+    </div>
+
+    <!-- P1 问题 -->
+    <div class="section-label" style="margin-top:8px;">🟡 P1 优先级问题</div>
+    <div class="chart-row col2">
+      <div class="chart-card">
+        <h3>③ 充值记录入口不清晰</h3>
+        <div class="issue-list">
+          <div class="issue-item">
+            <div class="issue-rank top">1</div>
+            <div class="issue-name">充值记录入口路径深 · 用户找不到</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
+            <div class="issue-pct">~17%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank top">2</div>
+            <div class="issue-name">大神充值记录不在账单内显示</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:71%"></div></div>
+            <div class="issue-pct">~12%</div>
+          </div>
+        </div>
+        <div class="note-block" style="margin-bottom:0;font-size:11px;">
+          可通过产品路径优化或智能引导话术显著降低咨询量，属可量化改善的导航类问题。
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>④ 充错账号 / 档位退款流程</h3>
+        <div class="issue-list">
+          <div class="issue-item">
+            <div class="issue-rank top">1</div>
+            <div class="issue-name">充错账号 · 退款路径不明</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
+            <div class="issue-pct">~10%</div>
+          </div>
+          <div class="issue-item">
+            <div class="issue-rank top">2</div>
+            <div class="issue-name">充错档位 · 差额退补规则模糊</div>
+            <div class="issue-bar-wrap"><div class="issue-bar" style="width:60%"></div></div>
+            <div class="issue-pct">~6%</div>
+          </div>
+        </div>
+        <div class="note-block" style="margin-bottom:0;font-size:11px;">
+          工单提交占比较高，处理链路可标准化，SOP 明确后可减少人工判断成本。
+        </div>
+      </div>
+    </div>
+
+    <!-- P2 问题 -->
+    <div class="section-label" style="margin-top:8px;">🟢 P2 优先级问题（活动期特殊）</div>
+    <div class="chart-card">
+      <h3>⑤ 优惠券活动期问题（7折卡）</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>问题类型</th><th>涉及场景</th><th>活动期占比</th><th>处理建议</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>取消支付后券消失/显示已使用</td>
+            <td>返利、方式、错误场景</td>
+            <td class="warn-text">~47%</td>
+            <td>活动上线前配置专属 FAQ</td>
+          </tr>
+          <tr>
+            <td>返利规则不展示 / 不计入</td>
+            <td>返利咨询</td>
+            <td class="warn-text">~26%</td>
+            <td>活动页补充规则说明</td>
+          </tr>
+          <tr>
+            <td>自动勾选券导致误用</td>
+            <td>充值错误</td>
+            <td class="warn-text">~12%</td>
+            <td>产品侧确认是否可优化默认行为</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note-block warn" style="margin-bottom:0;">
+        ⚠️ 以上问题由2月7折卡活动引发，非常态化问题。建议制定<strong>活动上线标准预案</strong>（提前48小时配置智能话术 + FAQ + 人工应答模板），而非针对本次进行系统改造。
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 页面4：工单专项 ========== -->
+  <section class="page" id="page-ticket">
+    <div class="page-header">
+      <h1>工单专项分析</h1>
+      <p>全场景工单 4,066 条 · 充值场景工单占比及处理特征</p>
+    </div>
+
+    <div class="kpi-grid" style="grid-template-columns: repeat(3,1fr);">
+      <div class="kpi-card blue">
+        <div class="kpi-label">全场景工单总量</div>
+        <div class="kpi-value">4,066<span>条</span></div>
+        <div class="kpi-note">同期 02.23–03.23</div>
+      </div>
+      <div class="kpi-card orange">
+        <div class="kpi-label">整体转单率</div>
+        <div class="kpi-value">14.59<span>%</span></div>
+        <div class="kpi-note">人工服务中提交工单比例</div>
+      </div>
+      <div class="kpi-card purple">
+        <div class="kpi-label">人工 FCR</div>
+        <div class="kpi-value">79.39<span>%</span></div>
+        <div class="kpi-note">人工一次解决率</div>
+      </div>
+    </div>
+
+    <div class="chart-row col2">
+      <div class="chart-card">
+        <h3>工单 vs 人工服务量对比</h3>
+        <div class="chart-box" id="chart-ticket-compare"></div>
+      </div>
+      <div class="chart-card">
+        <h3>工单场景归因推断</h3>
+        <div class="chart-box" id="chart-ticket-reason"></div>
+      </div>
+    </div>
+
+    <div class="section-label">工单场景特征分析</div>
+    <div class="chart-card">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>场景</th>
+            <th>工单触发原因</th>
+            <th>处理复杂度</th>
+            <th>可自动化程度</th>
+            <th>优化方向</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>货币/回声未到账</td>
+            <td>需后台核查订单</td>
+            <td><span class="warn-text">高</span></td>
+            <td>中（可接系统自查）</td>
+            <td>接入自助查单工具</td>
+          </tr>
+          <tr>
+            <td>账号风控/无法充值</td>
+            <td>需人工审核资质</td>
+            <td><span class="warn-text">高</span></td>
+            <td>低（需人工判断）</td>
+            <td>申诉引导标准化 SOP</td>
+          </tr>
+          <tr>
+            <td>充错账号/档位</td>
+            <td>需核实退款资格</td>
+            <td><span class="warn-text">中</span></td>
+            <td>中（可做规则预判）</td>
+            <td>退款标准 SOP 上线</td>
+          </tr>
+          <tr>
+            <td>充值不计入累充</td>
+            <td>需核查活动规则</td>
+            <td>中</td>
+            <td>中（活动期可预配）</td>
+            <td>活动上线时预配话术</td>
+          </tr>
+          <tr>
+            <td>优惠券问题</td>
+            <td>活动期异常波动</td>
+            <td><span class="good-text">低</span></td>
+            <td>高（活动结束后自然消解）</td>
+            <td>制定活动标准预案</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-block">
+      💡 <strong>结论</strong>：工单中高复杂度场景（未到账、风控）占据主要比例，短期内难以完全消除，但可通过 <strong>自助查单工具</strong> 和 <strong>申诉引导 SOP</strong> 降低人工介入深度，从而提升 FCR 并缩短工单处理周期。
+    </div>
+  </section>
+
+  <!-- ========== 页面5：优化建议 ========== -->
+  <section class="page" id="page-suggest">
+    <div class="page-header">
+      <h1>优化建议</h1>
+      <p>按优先级分级，聚焦常态高频问题</p>
+    </div>
+
+    <div class="section-label">优先级总览</div>
+    <div class="chart-card" style="margin-bottom:20px;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>优先级</th>
+            <th>问题</th>
+            <th>当前影响</th>
+            <th>优化方向</th>
+            <th>预期效果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge p0">P0</span></td>
+            <td>账号风控无法充值 · 申诉流程不清晰</td>
+            <td class="warn-text">用户体验损伤大</td>
+            <td>申诉引导话术标准化 + 自助申诉入口</td>
+            <td>降低人工处理量 ~30%</td>
+          </tr>
+          <tr>
+            <td><span class="badge p0">P0</span></td>
+            <td>货币/回声真实未到账 · 核查流程繁琐</td>
+            <td class="warn-text">资损感知强，投诉风险</td>
+            <td>自助查单工具 + 核查 SOP 标准化</td>
+            <td>工单处理时效提升</td>
+          </tr>
+          <tr>
+            <td><span class="badge p1">P1</span></td>
+            <td>充值记录入口不清晰</td>
+            <td>导航类重复咨询多</td>
+            <td>智能话术引导路径 + 产品入口优化建议</td>
+            <td>该类咨询量降低</td>
+          </tr>
+          <tr>
+            <td><span class="badge p1">P1</span></td>
+            <td>充错账号/档位退款流程模糊</td>
+            <td>工单量偏高</td>
+            <td>退款标准 SOP 上线</td>
+            <td>提升 FCR，减少二次联系</td>
+          </tr>
+          <tr>
+            <td><span class="badge p2">P2</span></td>
+            <td>优惠券活动期问题（7折卡）</td>
+            <td>活动期集中爆发</td>
+            <td>制定活动上线标准预案（FAQ + 话术提前配置）</td>
+            <td>活动期问题量可控</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-label">具体措施</div>
+    <div class="suggest-grid">
+      <div class="suggest-card">
+        <h3><span class="badge p0">P0</span> 风控申诉引导优化</h3>
+        <ul>
+          <li>在智能机器人中增加风控场景识别节点</li>
+          <li>提供标准化申诉引导话术，减少用户迷茫</li>
+          <li>补充自助申诉入口路径说明</li>
+          <li>人工接待时优先核实基本信息，缩短处理链路</li>
+        </ul>
+        <div class="owner">建议推进方：客服运营 + 产品</div>
+      </div>
+
+      <div class="suggest-card">
+        <h3><span class="badge p0">P0</span> 未到账自助查单工具</h3>
+        <ul>
+          <li>接入订单状态自动查询接口，用户可自助查单</li>
+          <li>提供标准核查 SOP，统一人工处理口径</li>
+          <li>对高频的"回声真实延迟"场景配置专属话术</li>
+          <li>建立催单分级处理机制，减少重复联系</li>
+        </ul>
+        <div class="owner">建议推进方：技术 + 客服运营</div>
+      </div>
+
+      <div class="suggest-card">
+        <h3><span class="badge p1">P1</span> 充值记录引导优化</h3>
+        <ul>
+          <li>智能机器人增加充值记录路径引导话术</li>
+          <li>向产品侧提出入口路径优化需求</li>
+          <li>大神充值记录显示问题纳入产品 bug 跟进</li>
+        </ul>
+        <div class="owner">建议推进方：客服运营 + 产品（提需求）</div>
+      </div>
+
+      <div class="suggest-card">
+        <h3><span class="badge p1">P1</span> 退款 SOP 标准化</h3>
+        <ul>
+          <li>明确充错账号/档位的退款条件与流程</li>
+          <li>输出标准 SOP 文档，供人工参考</li>
+          <li>在智能话术中增加退款预判节点</li>
+        </ul>
+        <div class="owner">建议推进方：客服运营</div>
+      </div>
+
+      <div class="suggest-card" style="grid-column: span 2;">
+        <h3><span class="badge p2">P2</span> 活动上线标准预案（优惠券场景）</h3>
+        <ul>
+          <li>活动上线前 48 小时：配置专属 FAQ + 智能机器人话术</li>
+          <li>活动上线前 24 小时：人工应答模板培训到位</li>
+          <li>活动期间：监控优惠券相关问题量，设置预警阈值</li>
+          <li>活动结束后：复盘问题量，更新预案文档</li>
+        </ul>
+        <div class="owner">建议推进方：运营 + 客服运营协同</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ===== 导航切换 =====
+  function switchPage(name, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    el.classList.add('active');
+    // 延迟初始化图表（避免容器尺寸为0）
+    setTimeout(() => initCharts(name), 50);
+  }
+
+  // ===== 图表初始化 =====
+  const chartsInited = {};
+
+  function initCharts(page) {
+    if (chartsInited[page]) return;
+    chartsInited[page] = true;
+
+    const darkBg = '#161b27';
+    const textColor = '#6a8ab8';
+    const colors = ['#5a9cf8','#34c78a','#f5a623','#9b6ef5','#e74c3c','#1abc9c'];
+
+    if (page === 'overview') {
+      // 服务量构成
+      const pie1 = echarts.init(document.getElementById('chart-service-pie'));
+      pie1.setOption({
+        backgroundColor: darkBg,
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        legend: { bottom: 0, textStyle: { color: textColor }, itemWidth: 10, itemHeight: 10 },
+        series: [{
+          type: 'pie', radius: ['40%','68%'], center: ['50%','45%'],
