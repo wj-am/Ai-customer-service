@@ -3,987 +3,1165 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>第五人格 · 充值场景客服分析报告</title>
-  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <title>第五人格·充值场景客服专项分析报告</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-      background: #0f1117;
-      color: #e0e6f0;
-      display: flex;
-      height: 100vh;
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .page {
+      width: 1200px;
+      min-height: 900px;
+      background: #ffffff;
+      margin: 32px auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
       overflow: hidden;
     }
 
-    /* ===== 左侧导航 ===== */
-    .sidebar {
-      width: 220px;
-      min-width: 220px;
-      background: #161b27;
-      border-right: 1px solid #252d40;
+    .page-header {
+      background: #ffffff;
+      border-bottom: 3px solid #4f46e5;
+      padding: 18px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header .report-title {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .page-header .page-num {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .page-body {
+      padding: 40px 48px;
+    }
+
+    /* ── 封面 ── */
+    .cover-page .page-body {
       display: flex;
       flex-direction: column;
-      padding: 0;
+      justify-content: center;
+      min-height: 820px;
+      padding: 80px;
     }
-
-    .sidebar-logo {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid #252d40;
-    }
-
-    .sidebar-logo .game-tag {
-      font-size: 11px;
-      color: #5a6a8a;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .sidebar-logo .title {
-      font-size: 15px;
+    .cover-tag {
+      display: inline-block;
+      background: #ede9fe;
+      color: #4f46e5;
+      font-size: 12px;
       font-weight: 600;
-      color: #c8d8f8;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      letter-spacing: 1px;
     }
-
-    .sidebar-logo .subtitle {
-      font-size: 11px;
-      color: #4a5a7a;
+    .cover-title {
+      font-size: 40px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .cover-subtitle {
+      font-size: 20px;
+      color: #6b7280;
+      font-weight: 400;
+      margin-bottom: 48px;
+    }
+    .cover-divider {
+      width: 60px;
+      height: 4px;
+      background: #4f46e5;
+      border-radius: 2px;
+      margin-bottom: 48px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 48px;
+    }
+    .cover-meta-item label {
+      display: block;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .cover-meta-item span {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+    }
+    .cover-badges {
+      display: flex;
+      gap: 16px;
+      margin-top: 64px;
+    }
+    .badge {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px 28px;
+      text-align: center;
+    }
+    .badge .badge-num {
+      font-size: 28px;
+      font-weight: 700;
+      color: #4f46e5;
+      display: block;
+    }
+    .badge .badge-label {
+      font-size: 12px;
+      color: #6b7280;
       margin-top: 4px;
     }
 
-    .nav-group-label {
-      padding: 16px 20px 6px;
-      font-size: 10px;
-      color: #3a4a6a;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    .nav-item {
+    /* ── 通用标题 ── */
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 11px 20px;
-      cursor: pointer;
-      font-size: 13px;
-      color: #6a7a9a;
-      border-left: 3px solid transparent;
-      transition: all 0.2s;
     }
-
-    .nav-item:hover {
-      background: #1e2535;
-      color: #a0b4d8;
-    }
-
-    .nav-item.active {
-      background: #1a2540;
-      color: #6aa3ff;
-      border-left: 3px solid #6aa3ff;
-    }
-
-    .nav-item .icon { font-size: 15px; width: 20px; text-align: center; }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 16px 20px;
-      border-top: 1px solid #252d40;
-      font-size: 11px;
-      color: #3a4a6a;
-    }
-
-    /* ===== 主内容区 ===== */
-    .main {
-      flex: 1;
-      overflow-y: auto;
-      padding: 28px 32px;
-    }
-
-    .page { display: none; }
-    .page.active { display: block; }
-
-    /* ===== 通用标题 ===== */
-    .page-header {
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #252d40;
-    }
-
-    .page-header h1 {
-      font-size: 20px;
-      font-weight: 600;
-      color: #d0e0ff;
-    }
-
-    .page-header p {
-      font-size: 12px;
-      color: #4a5a7a;
-      margin-top: 4px;
-    }
-
-    /* ===== 数据卡片 ===== */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .kpi-card {
-      background: #161b27;
-      border: 1px solid #252d40;
-      border-radius: 10px;
-      padding: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .kpi-card::before {
+    .section-title::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
+      display: inline-block;
+      width: 4px;
+      height: 20px;
+      background: #4f46e5;
+      border-radius: 2px;
     }
-
-    .kpi-card.blue::before { background: linear-gradient(90deg, #3a7bd5, #6aa3ff); }
-    .kpi-card.green::before { background: linear-gradient(90deg, #27ae60, #2ecc71); }
-    .kpi-card.orange::before { background: linear-gradient(90deg, #e67e22, #f39c12); }
-    .kpi-card.purple::before { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
-    .kpi-card.red::before { background: linear-gradient(90deg, #c0392b, #e74c3c); }
-    .kpi-card.teal::before { background: linear-gradient(90deg, #16a085, #1abc9c); }
-
-    .kpi-label {
-      font-size: 11px;
-      color: #5a6a8a;
-      margin-bottom: 8px;
-      letter-spacing: 0.5px;
-    }
-
-    .kpi-value {
-      font-size: 26px;
-      font-weight: 700;
-      color: #d0e0ff;
-      line-height: 1;
-    }
-
-    .kpi-value span {
+    .section-desc {
       font-size: 13px;
-      font-weight: 400;
-      color: #6a7a9a;
-      margin-left: 2px;
+      color: #6b7280;
+      margin-bottom: 28px;
+      padding-left: 14px;
     }
 
-    .kpi-note {
-      font-size: 11px;
-      color: #3a4a6a;
-      margin-top: 6px;
+    .sub-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #374151;
+      margin: 28px 0 14px;
+      padding-left: 10px;
+      border-left: 3px solid #818cf8;
     }
 
-    /* ===== 图表容器 ===== */
-    .chart-row {
-      display: grid;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .chart-row.col2 { grid-template-columns: 1fr 1fr; }
-    .chart-row.col3 { grid-template-columns: 1fr 1fr 1fr; }
-
-    .chart-card {
-      background: #161b27;
-      border: 1px solid #252d40;
-      border-radius: 10px;
-      padding: 20px;
-    }
-
-    .chart-card h3 {
-      font-size: 13px;
-      color: #8a9ab8;
-      margin-bottom: 16px;
-      font-weight: 500;
-    }
-
-    .chart-box { width: 100%; height: 240px; }
-
-    /* ===== 注释块 ===== */
-    .note-block {
-      background: #1a2035;
-      border: 1px solid #2a3a5a;
-      border-left: 3px solid #4a7adf;
-      border-radius: 6px;
-      padding: 12px 16px;
-      font-size: 12px;
-      color: #7a9ac8;
-      margin-bottom: 20px;
-      line-height: 1.7;
-    }
-
-    .note-block.warn {
-      border-left-color: #e67e22;
-      background: #1e1a10;
-      color: #c8a060;
-    }
-
-    /* ===== 表格 ===== */
-    .data-table {
+    /* ── 表格 ── */
+    table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      font-size: 13px;
     }
-
-    .data-table th {
-      background: #1e2535;
-      color: #6a8ab8;
-      padding: 10px 14px;
+    thead tr {
+      background: #f9fafb;
+    }
+    th {
+      padding: 10px 16px;
       text-align: left;
-      font-weight: 500;
-      border-bottom: 1px solid #252d40;
-    }
-
-    .data-table td {
-      padding: 10px 14px;
-      border-bottom: 1px solid #1e2535;
-      color: #a0b0cc;
-    }
-
-    .data-table tr:hover td { background: #1a2030; }
-
-    .data-table .highlight { color: #6aa3ff; font-weight: 600; }
-    .data-table .warn-text { color: #e67e22; }
-    .data-table .good-text { color: #2ecc71; }
-
-    /* ===== 优先级徽章 ===== */
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
       font-weight: 600;
+      color: #374151;
+      border-bottom: 2px solid #e5e7eb;
     }
-
-    .badge.p0 { background: #3d1212; color: #e74c3c; border: 1px solid #5a1a1a; }
-    .badge.p1 { background: #3d2a10; color: #f39c12; border: 1px solid #5a3a15; }
-    .badge.p2 { background: #1a2d1a; color: #2ecc71; border: 1px solid #1e3d1e; }
-
-    /* ===== 场景卡片 ===== */
-    .scene-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 24px;
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
     }
-
-    .scene-card {
-      background: #161b27;
-      border: 1px solid #252d40;
-      border-radius: 10px;
-      padding: 16px;
-      cursor: pointer;
-      transition: border-color 0.2s;
+    tr:last-child td {
+      border-bottom: none;
     }
-
-    .scene-card:hover { border-color: #3a5a9a; }
-
-    .scene-card.selected { border-color: #6aa3ff; background: #1a2540; }
-
-    .scene-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #c0d0f0;
-      margin-bottom: 6px;
+    tr:hover td {
+      background: #fafafa;
     }
-
-    .scene-count {
-      font-size: 20px;
+    .table-total td {
       font-weight: 700;
-      color: #6aa3ff;
+      background: #f9fafb;
+      border-top: 2px solid #e5e7eb;
     }
 
-    .scene-count span { font-size: 12px; color: #5a6a8a; margin-left: 2px; }
-
-    .scene-pct {
-      font-size: 11px;
-      color: #5a6a8a;
-      margin-top: 2px;
-    }
-
-    .progress-bar-wrap {
-      height: 4px;
-      background: #252d40;
-      border-radius: 2px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      border-radius: 2px;
-      background: linear-gradient(90deg, #3a6ad5, #6aa3ff);
-    }
-
-    /* ===== 问题列表 ===== */
-    .issue-list { margin-bottom: 20px; }
-
-    .issue-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #1e2535;
-    }
-
-    .issue-rank {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #252d40;
-      color: #6a7a9a;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .issue-rank.top { background: #2a3a6a; color: #6aa3ff; }
-
-    .issue-name { flex: 1; font-size: 12px; color: #a0b0cc; }
-
-    .issue-bar-wrap {
-      width: 100px;
-      height: 4px;
-      background: #252d40;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .issue-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #3a6ad5, #6aa3ff);
-      border-radius: 2px;
-    }
-
-    .issue-pct { font-size: 12px; color: #6aa3ff; width: 38px; text-align: right; }
-
-    /* ===== 优化建议卡片 ===== */
-    .suggest-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .suggest-card {
-      background: #161b27;
-      border: 1px solid #252d40;
-      border-radius: 10px;
-      padding: 18px;
-    }
-
-    .suggest-card h3 {
-      font-size: 13px;
-      font-weight: 600;
-      color: #c0d0f0;
-      margin-bottom: 10px;
+    /* ── 进度条 ── */
+    .bar-wrap {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
-    .suggest-card ul {
-      padding-left: 16px;
+    .bar-bg {
+      flex: 1;
+      height: 8px;
+      background: #f3f4f6;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: #4f46e5;
+    }
+    .bar-val {
       font-size: 12px;
-      color: #7a8aaa;
-      line-height: 2;
+      color: #6b7280;
+      min-width: 42px;
+      text-align: right;
     }
 
-    .suggest-card .owner {
-      font-size: 11px;
-      color: #3a4a6a;
-      margin-top: 10px;
-      padding-top: 8px;
-      border-top: 1px solid #252d40;
+    /* ── 高亮色 ── */
+    .c-purple { color: #4f46e5; font-weight: 600; }
+    .c-amber  { color: #d97706; font-weight: 600; }
+    .c-green  { color: #059669; font-weight: 600; }
+    .c-red    { color: #dc2626; font-weight: 600; }
+    .c-gray   { color: #9ca3af; }
+
+    /* ── Insight 卡片 ── */
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .insight-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .insight-card .num {
+      font-size: 26px;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+    .insight-card .num-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .insight-card .desc {
+      font-size: 13px;
+      color: #374151;
+      line-height: 1.5;
     }
 
-    /* ===== 分隔 ===== */
-    .section-label {
-      font-size: 11px;
-      color: #3a4a6a;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
+    /* ── 对比条 ── */
+    .compare-row {
+      display: flex;
+      align-items: center;
       margin-bottom: 12px;
+      gap: 12px;
+    }
+    .compare-label {
+      width: 130px;
+      font-size: 13px;
+      color: #374151;
+      flex-shrink: 0;
+    }
+    .compare-bars {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .compare-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .compare-tag {
+      font-size: 11px;
+      color: #9ca3af;
+      width: 36px;
+      flex-shrink: 0;
+    }
+    .cbar-bg {
+      flex: 1;
+      height: 7px;
+      background: #f3f4f6;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .cbar-fill-a { height: 100%; border-radius: 4px; background: #4f46e5; }
+    .cbar-fill-b { height: 100%; border-radius: 4px; background: #f59e0b; }
+    .cbar-val {
+      font-size: 12px;
+      min-width: 38px;
+      text-align: right;
+      color: #6b7280;
     }
 
-    /* ===== 滚动条 ===== */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #252d40; border-radius: 3px; }
+    /* ── 警告/提示框 ── */
+    .tip-box {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #92400e;
+      margin-bottom: 20px;
+    }
+    .info-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #1e40af;
+      margin-bottom: 20px;
+    }
+    .conclusion-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #14532d;
+      margin-top: 20px;
+    }
+    .conclusion-box ul { padding-left: 18px; }
+    .conclusion-box li { margin-bottom: 6px; }
+
+    /* ── 双列布局 ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .col-card {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .col-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* ── 行动项 ── */
+    .action-table th { background: #ede9fe; }
+    .priority-high { background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .priority-mid  { background: #fef9c3; color: #854d0e; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+    .priority-low  { background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+    /* ── 页脚 ── */
+    .page-footer {
+      border-top: 1px solid #f3f4f6;
+      padding: 14px 48px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #d1d5db;
+    }
+
+    @media print {
+      .page { margin: 0; border-radius: 0; box-shadow: none; page-break-after: always; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ===== 左侧导航 ===== -->
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="game-tag">Identity V · h55</div>
-    <div class="title">充值场景客服分析</div>
-    <div class="subtitle">数据周期：2025年3月</div>
+<!-- ════════════════════════════════════════════
+     PAGE 1 · 封面
+════════════════════════════════════════════ -->
+<div class="page cover-page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">01 / 10</span>
   </div>
-
-  <div class="nav-group-label">报告模块</div>
-
-  <div class="nav-item active" onclick="switchPage('overview', this)">
-    <span class="icon">📊</span> 整体概览
+  <div class="page-body">
+    <span class="cover-tag">客服数据专项分析</span>
+    <div class="cover-title">第五人格<br>充值场景客服专项分析报告</div>
+    <div class="cover-subtitle">Charge Scene Customer Service Analysis</div>
+    <div class="cover-divider"></div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <label>数据周期</label>
+        <span>2月23日 — 3月23日</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>分析范围</label>
+        <span>充值场景（人工线 + 工单线）</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>报告版本</label>
+        <span>v4 · 最终版</span>
+      </div>
+    </div>
+    <div class="cover-badges">
+      <div class="badge">
+        <span class="badge-num">66,231</span>
+        <div class="badge-label">人工对话总量</div>
+      </div>
+      <div class="badge">
+        <span class="badge-num">4,293</span>
+        <div class="badge-label">充值有效样本</div>
+      </div>
+      <div class="badge">
+        <span class="badge-num">4,066</span>
+        <div class="badge-label">全场景工单总量</div>
+      </div>
+      <div class="badge">
+        <span class="badge-num">175</span>
+        <div class="badge-label">充值专项工单</div>
+      </div>
+    </div>
   </div>
-  <div class="nav-item" onclick="switchPage('scene', this)">
-    <span class="icon">📦</span> 场景分析
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>2025</span>
   </div>
-  <div class="nav-item" onclick="switchPage('core', this)">
-    <span class="icon">⚠️</span> 核心问题
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 2 · 数据说明 + 全景总览
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">02 / 10</span>
   </div>
-  <div class="nav-item" onclick="switchPage('ticket', this)">
-    <span class="icon">📋</span> 工单专项
+  <div class="page-body">
+
+    <div class="section-title">数据说明</div>
+    <div class="section-desc">双线并行：人工线与工单线逻辑独立，结论互补</div>
+
+    <table>
+      <thead><tr><th>项目</th><th>数据</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>数据周期</td><td><strong>2月23日 — 3月23日</strong></td><td>约一个月</td></tr>
+        <tr><td>人工对话总量</td><td><strong>66,231 条</strong></td><td>充值场景专项数据清洗来源</td></tr>
+        <tr><td>充值有效样本（人工线主体）</td><td><strong>4,293 条</strong></td><td>清洗后充值问题有效对话</td></tr>
+        <tr><td>全场景工单总量</td><td><strong>4,066 条</strong></td><td>同期全场景工单</td></tr>
+        <tr><td>充值专项工单（工单线主体）</td><td><strong>175 条</strong></td><td>充值场景专项工单</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-title" style="margin-top:36px;">充值场景全景总览</div>
+    <div class="section-desc">人工线 vs 工单线 — 六大场景分布对比</div>
+
+    <div class="two-col">
+      <div class="col-card">
+        <h4>人工线 — 六大场景（4,293条）</h4>
+        <table>
+          <thead><tr><th>场景</th><th>条数</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>充值返利咨询</td><td>1,473</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:34.3%"></div></div><span class="bar-val">34.3%</span></div></td></tr>
+            <tr><td>充值方式</td><td>1,078</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:25.1%"></div></div><span class="bar-val">25.1%</span></div></td></tr>
+            <tr><td>充值未到账</td><td>513</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.9%"></div></div><span class="bar-val">11.9%</span></div></td></tr>
+            <tr><td>充值记录查询</td><td>492</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.5%"></div></div><span class="bar-val">11.5%</span></div></td></tr>
+            <tr><td>充值错误</td><td>485</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.3%"></div></div><span class="bar-val">11.3%</span></div></td></tr>
+            <tr><td>无法充值</td><td>252</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:5.9%"></div></div><span class="bar-val">5.9%</span></div></td></tr>
+            <tr class="table-total"><td>合计</td><td>4,293</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-card">
+        <h4>工单线 — 充值专项工单（175条）</h4>
+        <table>
+          <thead><tr><th>场景</th><th>条数</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>无法充值</td><td>58</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:33.1%;background:#ef4444"></div></div><span class="bar-val">33.1%</span></div></td></tr>
+            <tr><td>充值错误</td><td>40</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:22.9%;background:#f59e0b"></div></div><span class="bar-val">22.9%</span></div></td></tr>
+            <tr><td>充值未到账</td><td>38</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:21.7%;background:#f59e0b"></div></div><span class="bar-val">21.7%</span></div></td></tr>
+            <tr><td>充值记录查询</td><td>26</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:14.9%"></div></div><span class="bar-val">14.9%</span></div></td></tr>
+            <tr><td>充值方式</td><td>8</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.6%"></div></div><span class="bar-val">4.6%</span></div></td></tr>
+            <tr><td>充值返利咨询</td><td>7</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.0%"></div></div><span class="bar-val">4.0%</span></div></td></tr>
+            <tr class="table-total"><td>合计</td><td>175</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="conclusion-box">
+      <strong>双线核心洞察：</strong>
+      <ul>
+        <li><strong>无法充值</strong>：人工线占比最低（5.9%）→ 工单占比最高（33.1%），升级率远超其他场景，人工处理能力边界最清晰</li>
+        <li><strong>充值错误</strong>：工单占比22.9%，升级核心原因是涉及退款/回声转移，需后台操作权限</li>
+        <li><strong>充值返利咨询</strong>：人工线第一大场景（34.3%）→ 工单仅4.0%，说明此类问题人工可消化，升级率极低</li>
+      </ul>
+    </div>
+
   </div>
-  <div class="nav-item" onclick="switchPage('suggest', this)">
-    <span class="icon">✅</span> 优化建议
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>02 / 10</span>
   </div>
+</div>
 
-  <div class="sidebar-footer">
-    数据截止 2025.03.29<br/>
-    清洗范围 02.23–03.23
+
+<!-- ════════════════════════════════════════════
+     PAGE 3 · 充值方式 1,078条
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">03 / 10</span>
   </div>
-</aside>
+  <div class="page-body">
 
-<!-- ===== 主内容区 ===== -->
-<main class="main">
+    <div class="section-title">充值方式 · 1,078条（25.1%）</div>
+    <div class="section-desc">人工线第二大场景 · 核心问题高度集中在优惠券被吞</div>
 
-  <!-- ========== 页面1：整体概览 ========== -->
-  <section class="page active" id="page-overview">
-    <div class="page-header">
-      <h1>整体概览</h1>
-      <p>3月服务数据（截止29号）· 第五人格 h55 · 全场景</p>
-    </div>
+    <div class="sub-title">一、子类问题分布</div>
+    <table>
+      <thead><tr><th>排序</th><th>子类问题</th><th>条数</th><th>占比</th><th>核心表现</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong class="c-red">优惠券/折扣卡被吞</strong></td><td>约612条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:56.8%;background:#ef4444"></div></div><span class="bar-val">56.8%</span></div></td><td>退出/取消/支付失败后，7折券/9折券/满6减5.9/福利金显示"已使用"但未付款</td></tr>
+        <tr><td>2</td><td>充值入口找不到</td><td>约112条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:10.4%"></div></div><span class="bar-val">10.4%</span></div></td><td>大神App/iOS/小程序/微信助手找不到充值入口</td></tr>
+        <tr><td>3</td><td>待支付订单找不到</td><td>约98条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:9.1%"></div></div><span class="bar-val">9.1%</span></div></td><td>退出后找不到未完成订单，无法继续支付</td></tr>
+        <tr><td>4</td><td>优惠券领了用不了/不显示</td><td>约76条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:7.1%"></div></div><span class="bar-val">7.1%</span></div></td><td>领取后充值页面不显示/已领取但充值界面无法选用</td></tr>
+        <tr><td>5</td><td>无效信息/nan/闲聊</td><td>约68条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6.3%"></div></div><span class="bar-val">6.3%</span></div></td><td>打招呼、表情包、无实质内容</td></tr>
+        <tr><td>6</td><td>充值规则/渠道咨询</td><td>约48条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.5%"></div></div><span class="bar-val">4.5%</span></div></td><td>是否算累充/首充/支付宝微信支持等</td></tr>
+        <tr><td>7</td><td>防沉迷/未成年限制</td><td>约22条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:2.0%"></div></div><span class="bar-val">2.0%</span></div></td><td>未成年无法充值、17岁充值限额</td></tr>
+        <tr><td>8</td><td>其他（绑卡/解绑等）</td><td>约42条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:3.9%"></div></div><span class="bar-val">3.9%</span></div></td><td>解绑银行卡、账号绑定、支付密码</td></tr>
+      </tbody>
+    </table>
 
-    <div class="section-label">核心 KPI</div>
-    <div class="kpi-grid">
-      <div class="kpi-card blue">
-        <div class="kpi-label">总服务量</div>
-        <div class="kpi-value">406,255<span>条</span></div>
-        <div class="kpi-note">3月全渠道累计</div>
+    <div class="sub-title">二、被吞优惠券 612条 — 触发场景 & 券类型</div>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>触发场景分布</h4>
+        <table>
+          <thead><tr><th>触发场景</th><th>条数</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>选错支付方式/切换退出→券消失</td><td>约218条</td><td>35.6%</td></tr>
+            <tr><td>网卡/卡退/闪退→券消失</td><td>约162条</td><td>26.5%</td></tr>
+            <tr><td>主动取消/退出支付页→券消失</td><td>约143条</td><td>23.4%</td></tr>
+            <tr><td>支付失败（余额不足等）→券消失</td><td>约58条</td><td>9.5%</td></tr>
+            <tr><td>其他（跳转失败等）</td><td>约31条</td><td>5.1%</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="kpi-card green">
-        <div class="kpi-label">智能解决占比</div>
-        <div class="kpi-value">75.00<span>%</span></div>
-        <div class="kpi-note">约 304,691 条智能解决</div>
-      </div>
-      <div class="kpi-card orange">
-        <div class="kpi-label">人工服务量</div>
-        <div class="kpi-value">41,426<span>条</span></div>
-        <div class="kpi-note">人工服务占比 10.20%</div>
-      </div>
-      <div class="kpi-card purple">
-        <div class="kpi-label">整体 FCR</div>
-        <div class="kpi-value">81.68<span>%</span></div>
-        <div class="kpi-note">人工 FCR 79.39%</div>
-      </div>
-      <div class="kpi-card teal">
-        <div class="kpi-label">好评率</div>
-        <div class="kpi-value">78.79<span>%</span></div>
-        <div class="kpi-note">满意度评价</div>
-      </div>
-      <div class="kpi-card red">
-        <div class="kpi-label">提单比 / 转单率</div>
-        <div class="kpi-value">14.59<span>%</span></div>
-        <div class="kpi-note">人工无法一次解决转工单</div>
-      </div>
-    </div>
-
-    <div class="chart-row col2">
-      <div class="chart-card">
-        <h3>服务量构成</h3>
-        <div class="chart-box" id="chart-service-pie"></div>
-      </div>
-      <div class="chart-card">
-        <h3>关键指标一览</h3>
-        <div class="chart-box" id="chart-kpi-bar"></div>
+      <div class="col-card">
+        <h4>被吞券类型分布</h4>
+        <table>
+          <thead><tr><th>券类型</th><th>涉及条数</th></tr></thead>
+          <tbody>
+            <tr><td>7折券（含迎新礼7折、大神7折）</td><td><strong class="c-red">约430条</strong></td></tr>
+            <tr><td>满6减5.9元券</td><td>约82条</td></tr>
+            <tr><td>9折券</td><td>约68条</td></tr>
+            <tr><td>福利金（含通宝）</td><td>约52条</td></tr>
+            <tr><td>其他（6折/减11/减20等）</td><td>约20条</td></tr>
+          </tbody>
+        </table>
+        <div class="tip-box" style="margin-top:12px;margin-bottom:0;">⚠️ 部分用户涉及多种券同时被吞，按主诉归类</div>
       </div>
     </div>
 
-    <div class="note-block">
-      💡 <strong>数据说明</strong>：3月整体服务量超40万，智能解决占比达75%，人工服务占比仅10.20%，但仍有约41,426条进入人工；转单率14.59%，说明人工仍有相当比例无法一次性解决，需进一步提单处理。
+    <div class="conclusion-box">
+      <strong>关键结论：</strong>
+      <ul>
+        <li>优惠券被吞是绝对主力（56.8%，612条），7折券受损最重（约430条），是本场景最核心痛点</li>
+        <li>入口找不到（112条）+ 待支付订单找不到（98条）= 210条，属于充值路径设计断点问题</li>
+        <li>优惠券领了用不了（76条）与被吞问题共同指向充值助手侧的优惠券状态同步异常</li>
+      </ul>
     </div>
 
-    <div class="section-label" style="margin-top:4px;">本次分析数据说明</div>
-    <div class="chart-card">
-      <h3>充值场景专项数据范围（清洗数据）</h3>
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>项目</th>
-            <th>说明</th>
-            <th>备注</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>数据时间范围</td>
-            <td class="highlight">2月23日 — 3月23日</td>
-            <td>约一个月跨度，含2月末活动期</td>
-          </tr>
-          <tr>
-            <td>充值场景人工对话总量</td>
-            <td class="highlight">66,231 条</td>
-            <td>清洗前全量，含噪声数据</td>
-          </tr>
-          <tr>
-            <td>清洗后有效分析样本</td>
-            <td class="highlight">4,293 条</td>
-            <td>充值问题有效样本</td>
-          </tr>
-          <tr>
-            <td>全场景工单总量（同期）</td>
-            <td class="highlight">4,066 条</td>
-            <td>全场景工单</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>03 / 10</span>
+  </div>
+</div>
 
-  <!-- ========== 页面2：场景分析 ========== -->
-  <section class="page" id="page-scene">
-    <div class="page-header">
-      <h1>场景分析</h1>
-      <p>基于清洗后 4,293 条有效样本 · 六大充值场景分布与 TOP 问题</p>
-    </div>
 
-    <div class="section-label">场景分布（点击查看详细问题）</div>
-    <div class="scene-grid" id="scene-grid">
-      <!-- JS 渲染 -->
-    </div>
+<!-- ════════════════════════════════════════════
+     PAGE 4 · 充值未到账 513条
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">04 / 10</span>
+  </div>
+  <div class="page-body">
 
-    <div class="chart-row col2">
-      <div class="chart-card">
-        <h3>六大场景占比</h3>
-        <div class="chart-box" id="chart-scene-pie"></div>
+    <div class="section-title">充值未到账 · 513条（11.9%）</div>
+    <div class="section-desc">人工线第三大场景 · 优惠券被吞 + 道具未到账是双核心</div>
+
+    <div class="sub-title">一、子类问题分布</div>
+    <table>
+      <thead><tr><th>排序</th><th>子类问题</th><th>条数</th><th>占比</th><th>核心表现</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong class="c-red">优惠券/折扣卡被吞</strong></td><td>约148条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:28.9%;background:#ef4444"></div></div><span class="bar-val">28.9%</span></div></td><td>退出/取消/网卡后券显示"已使用"但未付款；回声未到账</td></tr>
+        <tr><td>2</td><td><strong class="c-amber">充值成功但道具未到账</strong></td><td>约126条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:24.6%;background:#f59e0b"></div></div><span class="bar-val">24.6%</span></div></td><td>支付宝/微信扣款成功，但游戏内回声/灯泡/灵感/线索/皮肤未到账</td></tr>
+        <tr><td>3</td><td>待支付订单找不到</td><td>约72条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:14.0%"></div></div><span class="bar-val">14.0%</span></div></td><td>退出后找不到待付款订单，无法继续支付</td></tr>
+        <tr><td>4</td><td>累充/消费未计入活动</td><td>约48条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:9.4%"></div></div><span class="bar-val">9.4%</span></div></td><td>大神充值/小程序充值未计入游戏累充奖励；充值后活动抽奖资格未解锁</td></tr>
+        <tr><td>5</td><td>充值到错误账号/渠道</td><td>约32条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6.2%"></div></div><span class="bar-val">6.2%</span></div></td><td>账号绑定混乱导致回声进入陌生账号；渠道服转官服后未到账</td></tr>
+        <tr><td>6</td><td>无效信息/nan/闲聊催单</td><td>约31条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6.0%"></div></div><span class="bar-val">6.0%</span></div></td><td>催单、打招呼、表情包等</td></tr>
+        <tr><td>7</td><td>重复扣款/多扣少到</td><td>约22条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.3%"></div></div><span class="bar-val">4.3%</span></div></td><td>扣两次款只到账一次；扣款金额与到账金额不符</td></tr>
+        <tr><td>8</td><td>活动奖励/礼包道具未到账</td><td>约20条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:3.9%"></div></div><span class="bar-val">3.9%</span></div></td><td>见面礼红包/V3礼包/灵感礼包游戏内未收到；竞猜积分未发放</td></tr>
+        <tr><td>9</td><td>其他（流水/退款/防沉迷）</td><td>约14条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:2.7%"></div></div><span class="bar-val">2.7%</span></div></td><td>申请退款、防沉迷充值限制等</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">二、充值成功但未到账 126条 — 渠道分布</div>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>渠道分布</h4>
+        <table>
+          <thead><tr><th>充值渠道</th><th>条数</th></tr></thead>
+          <tbody>
+            <tr><td>网易大神充值</td><td><strong class="c-red">约52条</strong></td></tr>
+            <tr><td>微信小程序/微信充值助手</td><td>约38条</td></tr>
+            <tr><td>游戏内直充</td><td>约22条</td></tr>
+            <tr><td>iOS / App Store</td><td>约14条</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="chart-card">
-        <h3>场景问题量对比</h3>
-        <div class="chart-box" id="chart-scene-bar"></div>
-      </div>
-    </div>
-
-    <div class="section-label" id="detail-label">场景 TOP 问题详情</div>
-    <div class="chart-card" id="scene-detail-card">
-      <h3 id="detail-title">点击上方场景卡片查看详情</h3>
-      <div id="detail-content" style="color:#5a6a8a;font-size:12px;padding:8px 0;">请选择一个场景</div>
-    </div>
-  </section>
-
-  <!-- ========== 页面3：核心问题 ========== -->
-  <section class="page" id="page-core">
-    <div class="page-header">
-      <h1>核心问题专项分析</h1>
-      <p>贯穿多场景的结构性问题，影响大、需优先关注</p>
-    </div>
-
-    <div class="note-block warn">
-      ⚠️ <strong>关于优惠券问题说明</strong>：本次清洗数据（2月23日—3月23日）期间，2月上线了7折卡限时活动，导致优惠券相关问题在各场景中占比异常偏高。由于该活动属一次性运营行为，后续不再复刻，预计问题量将显著回落，<strong>本次不列为高优先级优化项</strong>，建议制定活动上线标准预案。
-    </div>
-
-    <!-- P0 问题 -->
-    <div class="section-label">🔴 P0 优先级问题</div>
-    <div class="chart-row col2">
-      <div class="chart-card">
-        <h3>① 账号风控 / 无法充值</h3>
-        <div class="issue-list">
-          <div class="issue-item">
-            <div class="issue-rank top">1</div>
-            <div class="issue-name">风控触发 · 账号被限制充值</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
-            <div class="issue-pct">~37%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank top">2</div>
-            <div class="issue-name">申诉流程不清晰 · 用户无从下手</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:65%"></div></div>
-            <div class="issue-pct">~24%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank">3</div>
-            <div class="issue-name">充值页面卡死 / 加载异常</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:54%"></div></div>
-            <div class="issue-pct">~20%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank">4</div>
-            <div class="issue-name">渠道服充值异常</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:35%"></div></div>
-            <div class="issue-pct">~13%</div>
-          </div>
-        </div>
-        <div class="note-block" style="margin-bottom:0;font-size:11px;">
-          用户体验损伤大，风控申诉链路长，人工处理成本高，需优化申诉引导话术及自助流程。
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <h3>② 货币 / 回声真实未到账</h3>
-        <div class="issue-list">
-          <div class="issue-item">
-            <div class="issue-rank top">1</div>
-            <div class="issue-name">充值成功但游戏内货币未到账</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
-            <div class="issue-pct">~28%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank top">2</div>
-            <div class="issue-name">回声真实发放延迟 / 未发放</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:75%"></div></div>
-            <div class="issue-pct">~21%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank">3</div>
-            <div class="issue-name">充值不计入氪条 / 累充活动</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:39%"></div></div>
-            <div class="issue-pct">~11%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank">4</div>
-            <div class="issue-name">核查流程繁琐 · 用户催单多</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:30%"></div></div>
-            <div class="issue-pct">~8%</div>
-          </div>
-        </div>
-        <div class="note-block" style="margin-bottom:0;font-size:11px;">
-          直接影响用户资损感知，投诉风险高；核查链路可通过话术标准化 + 自助查单工具降低人工处理量。
-        </div>
+      <div class="col-card">
+        <h4>被吞券触发场景（148条）</h4>
+        <table>
+          <thead><tr><th>触发场景</th><th>条数</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>选错支付方式/切换退出</td><td>约52条</td><td>35.1%</td></tr>
+            <tr><td>网卡/闪退/卡顿退出</td><td>约38条</td><td>25.7%</td></tr>
+            <tr><td>主动取消/退出支付页</td><td>约34条</td><td>23.0%</td></tr>
+            <tr><td>支付失败（余额不足等）</td><td>约14条</td><td>9.5%</td></tr>
+            <tr><td>其他</td><td>约10条</td><td>6.8%</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- P1 问题 -->
-    <div class="section-label" style="margin-top:8px;">🟡 P1 优先级问题</div>
-    <div class="chart-row col2">
-      <div class="chart-card">
-        <h3>③ 充值记录入口不清晰</h3>
-        <div class="issue-list">
-          <div class="issue-item">
-            <div class="issue-rank top">1</div>
-            <div class="issue-name">充值记录入口路径深 · 用户找不到</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
-            <div class="issue-pct">~17%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank top">2</div>
-            <div class="issue-name">大神充值记录不在账单内显示</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:71%"></div></div>
-            <div class="issue-pct">~12%</div>
-          </div>
-        </div>
-        <div class="note-block" style="margin-bottom:0;font-size:11px;">
-          可通过产品路径优化或智能引导话术显著降低咨询量，属可量化改善的导航类问题。
-        </div>
-      </div>
+    <div class="conclusion-box">
+      <strong>关键结论：</strong>
+      <ul>
+        <li>优惠券被吞（148条）+ 待支付订单找不到（72条）= 220条，占总量42.9%，本质均为充值流程中断后状态异常</li>
+        <li>充值成功但未到账（126条），大神渠道是重灾区（约52条），大神侧充值链路存在稳定性问题</li>
+        <li>累充未计入活动（48条）集中反映大神充值与游戏侧数据同步延迟或不同步问题</li>
+        <li>充值到错误账号（32条）多发生在渠道服转官服场景，账号绑定逻辑存在用户感知混乱</li>
+      </ul>
+    </div>
 
-      <div class="chart-card">
-        <h3>④ 充错账号 / 档位退款流程</h3>
-        <div class="issue-list">
-          <div class="issue-item">
-            <div class="issue-rank top">1</div>
-            <div class="issue-name">充错账号 · 退款路径不明</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:100%"></div></div>
-            <div class="issue-pct">~10%</div>
-          </div>
-          <div class="issue-item">
-            <div class="issue-rank top">2</div>
-            <div class="issue-name">充错档位 · 差额退补规则模糊</div>
-            <div class="issue-bar-wrap"><div class="issue-bar" style="width:60%"></div></div>
-            <div class="issue-pct">~6%</div>
-          </div>
-        </div>
-        <div class="note-block" style="margin-bottom:0;font-size:11px;">
-          工单提交占比较高，处理链路可标准化，SOP 明确后可减少人工判断成本。
-        </div>
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>04 / 10</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 5 · 充值记录查询 492条
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">05 / 10</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">充值记录查询 · 492条（11.5%）</div>
+    <div class="section-desc">人工线第四大场景 · 用户核心诉求是"找券" 和 "找订单"</div>
+
+    <div class="sub-title">一、子类问题分布</div>
+    <table>
+      <thead><tr><th>排序</th><th>子类问题</th><th>条数</th><th>占比</th><th>核心表现</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong class="c-red">优惠券/折扣卡被吞</strong></td><td>约198条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:40.2%;background:#ef4444"></div></div><span class="bar-val">40.2%</span></div></td><td>退出/取消/支付失败后7折券/9折券/满6减5.9/福利金/六折卡显示"已使用"但未付款；含查询券使用记录、要求补发</td></tr>
+        <tr><td>2</td><td>充值记录/订单查询（找不到）</td><td>约88条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:17.9%"></div></div><span class="bar-val">17.9%</span></div></td><td>未支付订单找不到、充值记录在哪查、取消支付后订单消失</td></tr>
+        <tr><td>3</td><td>无效信息/nan/闲聊/催单</td><td>约62条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:12.6%"></div></div><span class="bar-val">12.6%</span></div></td><td>打招呼、表情包、催单等无实质内容</td></tr>
+        <tr><td>4</td><td>回声/流水/消费明细查询</td><td>约48条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:9.8%"></div></div><span class="bar-val">9.8%</span></div></td><td>查询回声消费记录、碎片流水、送礼记录、历史消耗</td></tr>
+        <tr><td>5</td><td>优惠券状态异常（显示已使用/用不了/不见了）</td><td>约38条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:7.7%"></div></div><span class="bar-val">7.7%</span></div></td><td>七折卡未使用但显示已使用、九折卡用不了、六折卡凭空消失</td></tr>
+        <tr><td>6</td><td>充值后返利/累充未到账</td><td>约28条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:5.7%"></div></div><span class="bar-val">5.7%</span></div></td><td>充值后累充奖励未到账、返利活动进度未更新</td></tr>
+        <tr><td>7</td><td>充值金额/账单核对</td><td>约18条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:3.7%"></div></div><span class="bar-val">3.7%</span></div></td><td>充值金额与实际扣款不符、账单明细核对</td></tr>
+        <tr><td>8</td><td>其他</td><td>约12条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:2.4%"></div></div><span class="bar-val">2.4%</span></div></td><td>退款查询、工单进度查询等</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      💡 本场景名为"充值记录查询"，但实际40.2%的用户核心诉求是<strong>投诉优惠券被吞并要求补发</strong>，而非单纯查询记录。这一场景高度承接了被吞问题的后续投诉流量。
+    </div>
+
+    <div class="sub-title">二、优惠券被吞 198条 — 关联活动/券类型</div>
+    <table>
+      <thead><tr><th>券/活动类型</th><th>涉及条数（估算）</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>7折券（含迎新礼/大神7折）</td><td><strong class="c-red">约128条</strong></td><td>最高频，迎新礼7折为主</td></tr>
+        <tr><td>满6减5.9元券</td><td>约32条</td><td>累充活动关联券</td></tr>
+        <tr><td>9折券</td><td>约22条</td><td>—</td></tr>
+        <tr><td>福利金/购物金/六折卡</td><td>约16条</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="conclusion-box">
+      <strong>关键结论：</strong>
+      <ul>
+        <li>优惠券被吞（198条，40.2%）是本场景绝对主力，且用户诉求是补发而非查询，应独立建立补发机制</li>
+        <li>充值记录/订单找不到（88条）是第二大问题，用户在充值流程中断后无法自助找回订单</li>
+        <li>优惠券状态异常（38条）与被吞问题叠加，共同指向充值助手侧券状态同步异常问题</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>05 / 10</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 6 · 充值错误 485条 + 无法充值 252条
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">06 / 10</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">充值错误 · 485条（11.3%）</div>
+    <div class="section-desc">工单升级率高 · 核心原因是退款/转移需后台权限</div>
+
+    <div class="sub-title">一、子类问题分布</div>
+    <table>
+      <thead><tr><th>排序</th><th>子类问题</th><th>条数</th><th>占比</th><th>核心表现</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong class="c-red">充错账号</strong></td><td>约145条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:29.9%;background:#ef4444"></div></div><span class="bar-val">29.9%</span></div></td><td>充值到非本人账号、渠道服账号混淆、多账号绑定导致充错</td></tr>
+        <tr><td>2</td><td><strong class="c-amber">误触/充错金额</strong></td><td>约112条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:23.1%;background:#f59e0b"></div></div><span class="bar-val">23.1%</span></div></td><td>误触快速支付/未确认就扣款、充错金额档位</td></tr>
+        <tr><td>3</td><td>充错渠道服</td><td>约68条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:14.0%"></div></div><span class="bar-val">14.0%</span></div></td><td>充到其他渠道服（应用宝/vivo/华为等），道具无法使用</td></tr>
+        <tr><td>4</td><td>重复充值/多次扣款</td><td>约58条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:12.0%"></div></div><span class="bar-val">12.0%</span></div></td><td>同一内容充了两次、网络异常导致重复提交订单</td></tr>
+        <tr><td>5</td><td>优惠券使用错误</td><td>约42条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:8.7%"></div></div><span class="bar-val">8.7%</span></div></td><td>用了不想用的券、未注意券的使用条件</td></tr>
+        <tr><td>6</td><td>无效信息/nan/催单</td><td>约32条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6.6%"></div></div><span class="bar-val">6.6%</span></div></td><td>无实质内容</td></tr>
+        <tr><td>7</td><td>其他</td><td>约28条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:5.8%"></div></div><span class="bar-val">5.8%</span></div></td><td>充错游戏/充错服务器等</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 36px;"></div>
+
+    <div class="section-title">无法充值 · 252条（5.9%）</div>
+    <div class="section-desc">人工线最小场景 · 但工单升级率最高（人工线5.9% → 工单33.1%）</div>
+
+    <div class="sub-title">二、子类问题分布</div>
+    <table>
+      <thead><tr><th>排序</th><th>子类问题</th><th>条数</th><th>占比</th><th>核心表现</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong class="c-red">优惠券/折扣卡被吞</strong></td><td>约118条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:46.8%;background:#ef4444"></div></div><span class="bar-val">46.8%</span></div></td><td>退出/取消/支付失败后7折券/9折券/满6减5.9/福利金显示"已使用"但未付款</td></tr>
+        <tr><td>2</td><td>待支付订单找不到</td><td>约48条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:19.0%"></div></div><span class="bar-val">19.0%</span></div></td><td>退出后找不到未完成订单，无法继续支付</td></tr>
+        <tr><td>3</td><td>账号风控/安全限制</td><td>约28条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.1%"></div></div><span class="bar-val">11.1%</span></div></td><td>显示"账号有安全隐患"/"存在风险"/"交易风险"，触发人脸识别、异地登录风控</td></tr>
+        <tr><td>4</td><td>支付页面跳转异常/白屏/卡死</td><td>约18条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:7.1%"></div></div><span class="bar-val">7.1%</span></div></td><td>充值界面加载不出来、跳转支付宝/微信失败、页面白屏</td></tr>
+        <tr><td>5</td><td>未成年/防沉迷限制</td><td>约14条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:5.6%"></div></div><span class="bar-val">5.6%</span></div></td><td>成年认证后仍显示"未成年嫌疑"、16~18岁充值额度限制</td></tr>
+        <tr><td>6</td><td>渠道服限制无法充值</td><td>约12条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.8%"></div></div><span class="bar-val">4.8%</span></div></td><td>应用宝/vivo/华为/360/小米渠道服无法使用网易充值助手</td></tr>
+        <tr><td>7</td><td>其他</td><td>约14条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:5.6%"></div></div><span class="bar-val">5.6%</span></div></td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="conclusion-box">
+      <strong>关键结论：</strong>
+      <ul>
+        <li>充值错误升级工单核心原因：充错账号（145条）和误触充错（112条）涉及退款/转移，需后台介入</li>
+        <li>无法充值中优惠券被吞依然是第一大子类（46.8%），说明被吞问题跨场景渗透极强</li>
+        <li>账号风控（28条）是真正意义上"无法充值"的核心问题，但人工无权解除风控，工单升级率高</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>06 / 10</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 7 · 工单线专项分析
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">07 / 10</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">工单线专项分析 · 175条</div>
+    <div class="section-desc">工单线独立分析 · 反映人工无法解决、需升级处理的真实问题</div>
+
+    <div class="sub-title">一、各场景工单聚类明细</div>
+
+    <table>
+      <thead><tr><th>场景</th><th>工单量</th><th>主要聚类问题</th><th>升级核心原因</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>无法充值</strong><br><span class="c-red">58条 · 33.1%</span></td>
+          <td>58条</td>
+          <td>账号安全隐患/风险限制（约15～18条）；页面卡顿/加载转圈（约10条）；防沉迷/充值限额（少量）；渠道服限制（少量）</td>
+          <td>账号风控解除需后台操作；技术异常人工无权处理</td>
+        </tr>
+        <tr>
+          <td><strong>充值错误</strong><br><span class="c-amber">40条 · 22.9%</span></td>
+          <td>40条</td>
+          <td>充错账号（约15条）；误触/充错金额（约10条）；充错渠道服（少量）</td>
+          <td>涉及回声转移/退款，需后台财务操作权限</td>
+        </tr>
+        <tr>
+          <td><strong>充值未到账</strong><br><span class="c-amber">38条 · 21.7%</span></td>
+          <td>38条</td>
+          <td>充值成功但道具未到账（最多）；重复扣款（少量）；累充未计入（少量）</td>
+          <td>需核查支付流水与游戏侧到账记录，人工无查询权限</td>
+        </tr>
+        <tr>
+          <td><strong>充值记录查询</strong><br>26条 · 14.9%</td>
+          <td>26条</td>
+          <td>优惠券/折扣券/福利金消失（约15条以上，最突出）；充值记录核对/重复扣费（少量）</td>
+          <td>券被吞后用户要求补发，人工无补发权限</td>
+        </tr>
+        <tr>
+          <td><strong>充值方式</strong><br>8条 · 4.6%</td>
+          <td>8条</td>
+          <td>特殊支付方式异常；渠道服支付限制</td>
+          <td>技术/渠道问题人工无法处理</td>
+        </tr>
+        <tr>
+          <td><strong>充值返利咨询</strong><br>7条 · 4.0%</td>
+          <td>7条</td>
+          <td>返利奖励长时间未发放；累充数据异常</td>
+          <td>需后台核查累充数据或手动发放奖励</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">二、工单升级原因归类</div>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="num">~58条</div>
+        <div class="num-label">后台权限类</div>
+        <div class="desc">账号风控解除、券补发、回声转移、手动发放奖励——人工无操作权限，必须升级工单</div>
+      </div>
+      <div class="insight-card">
+        <div class="num">~76条</div>
+        <div class="num-label">流水核查类</div>
+        <div class="desc">充值成功但未到账、重复扣款、充值记录不符——需核查支付流水与游戏到账记录</div>
+      </div>
+      <div class="insight-card">
+        <div class="num">~41条</div>
+        <div class="num-label">技术/渠道异常类</div>
+        <div class="desc">页面白屏、跳转失败、渠道服支付异常——属于技术问题，人工无处理能力</div>
       </div>
     </div>
 
-    <!-- P2 问题 -->
-    <div class="section-label" style="margin-top:8px;">🟢 P2 优先级问题（活动期特殊）</div>
-    <div class="chart-card">
-      <h3>⑤ 优惠券活动期问题（7折卡）</h3>
-      <table class="data-table">
-        <thead>
-          <tr><th>问题类型</th><th>涉及场景</th><th>活动期占比</th><th>处理建议</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>取消支付后券消失/显示已使用</td>
-            <td>返利、方式、错误场景</td>
-            <td class="warn-text">~47%</td>
-            <td>活动上线前配置专属 FAQ</td>
-          </tr>
-          <tr>
-            <td>返利规则不展示 / 不计入</td>
-            <td>返利咨询</td>
-            <td class="warn-text">~26%</td>
-            <td>活动页补充规则说明</td>
-          </tr>
-          <tr>
-            <td>自动勾选券导致误用</td>
-            <td>充值错误</td>
-            <td class="warn-text">~12%</td>
-            <td>产品侧确认是否可优化默认行为</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="note-block warn" style="margin-bottom:0;">
-        ⚠️ 以上问题由2月7折卡活动引发，非常态化问题。建议制定<strong>活动上线标准预案</strong>（提前48小时配置智能话术 + FAQ + 人工应答模板），而非针对本次进行系统改造。
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== 页面4：工单专项 ========== -->
-  <section class="page" id="page-ticket">
-    <div class="page-header">
-      <h1>工单专项分析</h1>
-      <p>全场景工单 4,066 条 · 充值场景工单占比及处理特征</p>
+    <div class="tip-box">
+      ⚠️ 工单中"优惠券被吞"问题（充值记录查询工单约15条以上）主要诉求是<strong>补发</strong>，而非查询。当前人工无补发权限，导致此类问题必然升级工单，建议评估人工授权补发的可行性以降低工单量。
     </div>
 
-    <div class="kpi-grid" style="grid-template-columns: repeat(3,1fr);">
-      <div class="kpi-card blue">
-        <div class="kpi-label">全场景工单总量</div>
-        <div class="kpi-value">4,066<span>条</span></div>
-        <div class="kpi-note">同期 02.23–03.23</div>
+    <div class="conclusion-box">
+      <strong>工单线核心洞察：</strong>
+      <ul>
+        <li>工单问题本质上分三类：权限缺口（无法操作）、流水核查（无查询权限）、技术异常（无处理能力）</li>
+        <li>充值记录查询工单中优惠券补发诉求突出，若开放人工补发权限可有效降低工单量</li>
+        <li>充值未到账和充值错误的工单升级，本质都是资金流水核查问题，可考虑建立自助流水核查工具</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>07 / 10</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 8 · 跨场景专题：优惠券被吞全景
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">08 / 10</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">跨场景专题：优惠券被吞全景分析</div>
+    <div class="section-desc">横跨5个场景 · 全量估算约1,076条 · 占有效样本25.1%</div>
+
+    <div class="sub-title">一、各场景被吞量汇总</div>
+    <table>
+      <thead><tr><th>来源场景</th><th>被吞条数</th><th>占该场景比</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>充值方式（1,078条）</td><td><strong class="c-red">约612条</strong></td><td>56.8%</td><td>第一大被吞来源，绝对主力</td></tr>
+        <tr><td>充值返利咨询（1,473条）</td><td><strong class="c-red">约542条</strong></td><td>36.8%</td><td>第二大，含券消失后要求补发返利的复合诉求</td></tr>
+        <tr><td>充值记录查询（492条）</td><td>约198条</td><td>40.2%</td><td>用户核心诉求是补发而非查询</td></tr>
+        <tr><td>充值未到账（513条）</td><td>约148条</td><td>28.9%</td><td>含回声未到账的复合诉求</td></tr>
+        <tr><td>无法充值（252条）</td><td>约118条</td><td>46.8%</td><td>券消失 → 用户认为无法充值</td></tr>
+        <tr class="table-total"><td>全量合计</td><td><strong class="c-red">约1,618条</strong></td><td>占有效样本37.7%</td><td>跨场景全量（含重叠诉求）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">⚠️ 上述数据存在跨场景重叠（同一用户在不同场景反映同一问题），去重后估算实际涉及用户约1,076条，占有效样本25.1%。以下分析以去重口径为准。</div>
+
+    <div class="sub-title">二、7折券占比最高 — 活动关联分析</div>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>被吞券类型分布（去重口径估算）</h4>
+        <table>
+          <thead><tr><th>券类型</th><th>涉及条数</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>7折券（含迎新礼7折、大神7折）</td><td><strong class="c-red">约680条</strong></td><td>最高频，迎新礼7折为主要来源</td></tr>
+            <tr><td>满6减5.9元券</td><td>约158条</td><td>关联累充/消费活动</td></tr>
+            <tr><td>9折券</td><td>约122条</td><td>—</td></tr>
+            <tr><td>福利金/购物金/通宝券</td><td>约86条</td><td>—</td></tr>
+            <tr><td>其他（6折/减11/减20等）</td><td>约30条</td><td>—</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="kpi-card orange">
-        <div class="kpi-label">整体转单率</div>
-        <div class="kpi-value">14.59<span>%</span></div>
-        <div class="kpi-note">人工服务中提交工单比例</div>
-      </div>
-      <div class="kpi-card purple">
-        <div class="kpi-label">人工 FCR</div>
-        <div class="kpi-value">79.39<span>%</span></div>
-        <div class="kpi-note">人工一次解决率</div>
+      <div class="col-card">
+        <h4>综合触发场景分布</h4>
+        <table>
+          <thead><tr><th>触发场景</th><th>估算占比</th></tr></thead>
+          <tbody>
+            <tr><td>选错支付方式/切换退出 → 券消失</td><td><strong>约35%</strong></td></tr>
+            <tr><td>网卡/闪退/卡顿退出 → 券消失</td><td>约26%</td></tr>
+            <tr><td>主动取消/退出支付页 → 券消失</td><td>约23%</td></tr>
+            <tr><td>支付失败（余额不足等） → 券消失</td><td>约10%</td></tr>
+            <tr><td>其他（跳转失败等）</td><td>约6%</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="chart-row col2">
-      <div class="chart-card">
-        <h3>工单 vs 人工服务量对比</h3>
-        <div class="chart-box" id="chart-ticket-compare"></div>
+    <div class="sub-title">三、核心问题定位</div>
+    <div class="insight-grid">
+      <div class="insight-card">
+        <div class="num">~61%</div>
+        <div class="num-label">支付中断类触发</div>
+        <div class="desc">选错支付方式（35%）+ 网卡闪退（26%），两者合计超过六成，本质是支付中断后券状态未正确回滚</div>
       </div>
-      <div class="chart-card">
-        <h3>工单场景归因推断</h3>
-        <div class="chart-box" id="chart-ticket-reason"></div>
+      <div class="insight-card">
+        <div class="num">~63%</div>
+        <div class="num-label">7折券受损比例</div>
+        <div class="desc">约680条涉及7折券，是被吞最严重的券种，迎新礼7折为高频来源，新用户首次充值体验受损尤为突出</div>
+      </div>
+      <div class="insight-card">
+        <div class="num">约1,076条</div>
+        <div class="num-label">全场景受影响用户</div>
+        <div class="desc">占有效样本25.1%，是本次充值场景中体量最大的单一问题，远超其他任何子类问题</div>
+      </div>
+    </div>
+
+    <div class="conclusion-box">
+      <strong>核心结论：</strong>
+      <ul>
+        <li>优惠券被吞是本次充值场景最核心的单一痛点，跨场景去重后约1,076条，占有效样本25.1%</li>
+        <li>技术根因：支付流程中断后（切换支付方式/网卡/主动取消），券状态被错误标记为"已使用"且未回滚</li>
+        <li>7折迎新礼受损最重，直接影响新用户首充体验，是优先级最高的修复方向</li>
+        <li>满6减5.9元券（约158条）关联累充活动，被吞后用户同时损失优惠券和累充进度，投诉情绪较强</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>08 / 10</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 9 · 行动建议
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">09 / 10</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">行动建议</div>
+    <div class="section-desc">基于数据优先级排序 · 分产品/运营/客服三个维度</div>
+
+    <div class="sub-title">一、产品侧行动项</div>
+    <table class="action-table">
+      <thead><tr><th>优先级</th><th>问题</th><th>数据依据</th><th>具体行动</th><th>预期收益</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="priority-high">P0</span></td>
+          <td>优惠券被吞 — 支付中断后状态未回滚</td>
+          <td>约1,076条，占有效样本25.1%</td>
+          <td>修复支付流程中断（切换支付方式/网卡/主动取消/支付失败）后券状态回滚逻辑，确保券在未完成支付时不被标记为"已使用"</td>
+          <td>直接减少约1,076条投诉；改善新用户首充体验</td>
+        </tr>
+        <tr>
+          <td><span class="priority-high">P0</span></td>
+          <td>待支付订单找不到</td>
+          <td>跨场景合计约218条</td>
+          <td>在充值助手/大神App增加"待支付订单"明确入口；退出支付页前增加提示弹窗"是否放弃本次支付"</td>
+          <td>减少约218条流量；减少因找不到订单导致的重复充值</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>充值入口找不到</td>
+          <td>约112条</td>
+          <td>优化大神App/iOS/小程序充值入口的可见性和路径层级；增加充值助手首页快捷入口</td>
+          <td>减少约112条基础咨询量；降低新用户操作门槛</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>充值成功但道具未到账（大神渠道为主）</td>
+          <td>约126条，大神渠道约52条</td>
+          <td>排查大神充值→游戏侧到账链路的稳定性问题；增加到账状态实时反馈；建立异常到账自动补发机制</td>
+          <td>减少约126条投诉；提升大神渠道充值可信度</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>累充/消费未计入活动</td>
+          <td>约48+48=96条（未到账+充值返利）</td>
+          <td>排查大神充值/小程序充值与游戏侧累充数据的同步延迟；增加同步状态提示（"充值已同步，活动进度将在X分钟内更新"）</td>
+          <td>减少约96条投诉；降低用户因数据延迟产生的误判</td>
+        </tr>
+        <tr>
+          <td><span class="priority-low">P2</span></td>
+          <td>误触快速支付/充错金额</td>
+          <td>约112条</td>
+          <td>在快速支付/一键充值前增加二次确认弹窗（金额、账号、券使用情况）</td>
+          <td>减少约112条充值错误投诉；降低工单退款量</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">二、运营侧行动项</div>
+    <table class="action-table">
+      <thead><tr><th>优先级</th><th>问题</th><th>数据依据</th><th>具体行动</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="priority-high">P0</span></td>
+          <td>7折迎新礼被吞</td>
+          <td>约680条涉及7折券，是被吞最重券种</td>
+          <td>在产品修复前，建立迎新礼7折券被吞的快速补发SOP；用户反馈被吞后可提供自助补发或客服一键补发</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>满6减5.9元券被吞影响累充进度</td>
+          <td>约158条，复合损失（券+累充进度）</td>
+          <td>针对满6减5.9元券被吞场景，补发券的同时核查累充进度是否受影响；建立联动补偿机制</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>充值返利规则不清晰</td>
+          <td>充值返利咨询1,473条，34.3%最高</td>
+          <td>优化充值助手内返利活动规则展示；增加"大神充值是否计入累充"等高频FAQ的前置说明</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">三、客服侧行动项</div>
+    <table class="action-table">
+      <thead><tr><th>优先级</th><th>问题</th><th>具体行动</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="priority-high">P0</span></td>
+          <td>券被吞补发权限</td>
+          <td>评估开放人工一线券补发权限（至少7折迎新礼/满6减5.9元券），减少因补发需求升级工单的约15条工单量</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>充值成功未到账 — 快速核查工具</td>
+          <td>为客服提供支付流水与游戏到账记录的快速核查工具，减少因无权限核查导致的工单升级（约76条）</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>账号风控场景话术优化</td>
+          <td>针对"账号有安全隐患/存在风险"场景（约28条），优化客服话术，明确告知解除路径和预计时间，减少用户反复追问</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>09 / 10</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 10 · 总结
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">10 / 10</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">总结</div>
+    <div class="section-desc">核心发现 · 三句话概括</div>
+
+    <div class="insight-grid" style="margin-bottom:36px;">
+      <div class="insight-card">
+        <div class="num" style="font-size:18px;">优惠券被吞</div>
+        <div class="num-label">第一大痛点</div>
+        <div class="desc">跨场景去重后约1,076条，占有效样本25.1%，7折迎新礼受损最重，根因是支付中断后券状态未回滚，是优先级最高的修复方向</div>
+      </div>
+      <div class="insight-card">
+        <div class="num" style="font-size:18px;">充值路径断点</div>
+        <div class="num-label">第二大问题集群</div>
+        <div class="desc">待支付订单找不到（约218条）+ 充值入口找不到（112条）= 约330条，属于充值路径设计问题，用户在流程中断后无法自助续接</div>
+      </div>
+      <div class="insight-card">
+        <div class="num" style="font-size:18px;">工单升级三大根因</div>
+        <div class="num-label">工单线核心发现</div>
+        <div class="desc">后台权限缺口（无法补发/解除风控）、流水核查权限缺口、技术异常，三类问题共同导致无法充值工单升级率达33.1%</div>
       </div>
     </div>
 
-    <div class="section-label">工单场景特征分析</div>
-    <div class="chart-card">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>场景</th>
-            <th>工单触发原因</th>
-            <th>处理复杂度</th>
-            <th>可自动化程度</th>
-            <th>优化方向</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>货币/回声未到账</td>
-            <td>需后台核查订单</td>
-            <td><span class="warn-text">高</span></td>
-            <td>中（可接系统自查）</td>
-            <td>接入自助查单工具</td>
-          </tr>
-          <tr>
-            <td>账号风控/无法充值</td>
-            <td>需人工审核资质</td>
-            <td><span class="warn-text">高</span></td>
-            <td>低（需人工判断）</td>
-            <td>申诉引导标准化 SOP</td>
-          </tr>
-          <tr>
-            <td>充错账号/档位</td>
-            <td>需核实退款资格</td>
-            <td><span class="warn-text">中</span></td>
-            <td>中（可做规则预判）</td>
-            <td>退款标准 SOP 上线</td>
-          </tr>
-          <tr>
-            <td>充值不计入累充</td>
-            <td>需核查活动规则</td>
-            <td>中</td>
-            <td>中（活动期可预配）</td>
-            <td>活动上线时预配话术</td>
-          </tr>
-          <tr>
-            <td>优惠券问题</td>
-            <td>活动期异常波动</td>
-            <td><span class="good-text">低</span></td>
-            <td>高（活动结束后自然消解）</td>
-            <td>制定活动标准预案</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="sub-title">数据总览回顾</div>
+    <table>
+      <thead><tr><th>维度</th><th>数据</th></tr></thead>
+      <tbody>
+        <tr><td>数据周期</td><td>2月23日 — 3月23日</td></tr>
+        <tr><td>人工对话总量</td><td>66,231条</td></tr>
+        <tr><td>充值有效样本</td><td>4,293条</td></tr>
+        <tr><td>充值专项工单</td><td>175条（来自全场景4,066条工单）</td></tr>
+        <tr><td>最大单一场景</td><td>充值返利咨询 1,473条（34.3%）</td></tr>
+        <tr><td>最大单一问题</td><td>优惠券被吞 约1,076条（去重，占25.1%）</td></tr>
+        <tr><td>工单升级率最高场景</td><td>无法充值（人工5.9% → 工单33.1%）</td></tr>
+        <tr><td>工单升级率最低场景</td><td>充值返利咨询（人工34.3% → 工单4.0%）</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">优先级行动清单（汇总）</div>
+    <table class="action-table">
+      <thead><tr><th>优先级</th><th>行动项</th><th>负责方</th><th>影响量级</th></tr></thead>
+      <tbody>
+        <tr><td><span class="priority-high">P0</span></td><td>修复支付中断后优惠券状态未回滚的技术问题</td><td>产品 + 技术</td><td>约1,076条</td></tr>
+        <tr><td><span class="priority-high">P0</span></td><td>在产品修复前建立7折迎新礼被吞快速补发SOP</td><td>运营 + 客服</td><td>约680条</td></tr>
+        <tr><td><span class="priority-high">P0</span></td><td>增加"待支付订单"明确入口 + 退出前提示弹窗</td><td>产品</td><td>约218条</td></tr>
+        <tr><td><span class="priority-mid">P1</span></td><td>排查大神充值→游戏侧到账链路稳定性</td><td>技术 + 产品</td><td>约126条</td></tr>
+        <tr><td><span class="priority-mid">P1</span></td><td>开放人工一线券补发权限（7折/满6减5.9）</td><td>客服 + 运营</td><td>降低工单约15条+</td></tr>
+        <tr><td><span class="priority-mid">P1</span></td><td>优化充值入口可见性（大神App/iOS/小程序）</td><td>产品</td><td>约112条</td></tr>
+        <tr><td><span class="priority-mid">P1</span></td><td>大神充值与游戏侧累充数据同步延迟修复</td><td>技术</td><td>约96条</td></tr>
+        <tr><td><span class="priority-low">P2</span></td><td>快速支付增加二次确认弹窗</td><td>产品</td><td>约112条</td></tr>
+        <tr><td><span class="priority-low">P2</span></td><td>账号风控场景客服话术优化</td><td>客服</td><td>约28条</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box" style="margin-top:24px;">
+      📌 本报告基于2月23日—3月23日客服对话数据分析，渠道来源数据暂未纳入。如需进一步拆分渠道维度或活动维度，请补充对应数据后更新。
     </div>
 
-    <div class="note-block">
-      💡 <strong>结论</strong>：工单中高复杂度场景（未到账、风控）占据主要比例，短期内难以完全消除，但可通过 <strong>自助查单工具</strong> 和 <strong>申诉引导 SOP</strong> 降低人工介入深度，从而提升 FCR 并缩短工单处理周期。
-    </div>
-  </section>
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>10 / 10</span>
+  </div>
+</div>
 
-  <!-- ========== 页面5：优化建议 ========== -->
-  <section class="page" id="page-suggest">
-    <div class="page-header">
-      <h1>优化建议</h1>
-      <p>按优先级分级，聚焦常态高频问题</p>
-    </div>
-
-    <div class="section-label">优先级总览</div>
-    <div class="chart-card" style="margin-bottom:20px;">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>优先级</th>
-            <th>问题</th>
-            <th>当前影响</th>
-            <th>优化方向</th>
-            <th>预期效果</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="badge p0">P0</span></td>
-            <td>账号风控无法充值 · 申诉流程不清晰</td>
-            <td class="warn-text">用户体验损伤大</td>
-            <td>申诉引导话术标准化 + 自助申诉入口</td>
-            <td>降低人工处理量 ~30%</td>
-          </tr>
-          <tr>
-            <td><span class="badge p0">P0</span></td>
-            <td>货币/回声真实未到账 · 核查流程繁琐</td>
-            <td class="warn-text">资损感知强，投诉风险</td>
-            <td>自助查单工具 + 核查 SOP 标准化</td>
-            <td>工单处理时效提升</td>
-          </tr>
-          <tr>
-            <td><span class="badge p1">P1</span></td>
-            <td>充值记录入口不清晰</td>
-            <td>导航类重复咨询多</td>
-            <td>智能话术引导路径 + 产品入口优化建议</td>
-            <td>该类咨询量降低</td>
-          </tr>
-          <tr>
-            <td><span class="badge p1">P1</span></td>
-            <td>充错账号/档位退款流程模糊</td>
-            <td>工单量偏高</td>
-            <td>退款标准 SOP 上线</td>
-            <td>提升 FCR，减少二次联系</td>
-          </tr>
-          <tr>
-            <td><span class="badge p2">P2</span></td>
-            <td>优惠券活动期问题（7折卡）</td>
-            <td>活动期集中爆发</td>
-            <td>制定活动上线标准预案（FAQ + 话术提前配置）</td>
-            <td>活动期问题量可控</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="section-label">具体措施</div>
-    <div class="suggest-grid">
-      <div class="suggest-card">
-        <h3><span class="badge p0">P0</span> 风控申诉引导优化</h3>
-        <ul>
-          <li>在智能机器人中增加风控场景识别节点</li>
-          <li>提供标准化申诉引导话术，减少用户迷茫</li>
-          <li>补充自助申诉入口路径说明</li>
-          <li>人工接待时优先核实基本信息，缩短处理链路</li>
-        </ul>
-        <div class="owner">建议推进方：客服运营 + 产品</div>
-      </div>
-
-      <div class="suggest-card">
-        <h3><span class="badge p0">P0</span> 未到账自助查单工具</h3>
-        <ul>
-          <li>接入订单状态自动查询接口，用户可自助查单</li>
-          <li>提供标准核查 SOP，统一人工处理口径</li>
-          <li>对高频的"回声真实延迟"场景配置专属话术</li>
-          <li>建立催单分级处理机制，减少重复联系</li>
-        </ul>
-        <div class="owner">建议推进方：技术 + 客服运营</div>
-      </div>
-
-      <div class="suggest-card">
-        <h3><span class="badge p1">P1</span> 充值记录引导优化</h3>
-        <ul>
-          <li>智能机器人增加充值记录路径引导话术</li>
-          <li>向产品侧提出入口路径优化需求</li>
-          <li>大神充值记录显示问题纳入产品 bug 跟进</li>
-        </ul>
-        <div class="owner">建议推进方：客服运营 + 产品（提需求）</div>
-      </div>
-
-      <div class="suggest-card">
-        <h3><span class="badge p1">P1</span> 退款 SOP 标准化</h3>
-        <ul>
-          <li>明确充错账号/档位的退款条件与流程</li>
-          <li>输出标准 SOP 文档，供人工参考</li>
-          <li>在智能话术中增加退款预判节点</li>
-        </ul>
-        <div class="owner">建议推进方：客服运营</div>
-      </div>
-
-      <div class="suggest-card" style="grid-column: span 2;">
-        <h3><span class="badge p2">P2</span> 活动上线标准预案（优惠券场景）</h3>
-        <ul>
-          <li>活动上线前 48 小时：配置专属 FAQ + 智能机器人话术</li>
-          <li>活动上线前 24 小时：人工应答模板培训到位</li>
-          <li>活动期间：监控优惠券相关问题量，设置预警阈值</li>
-          <li>活动结束后：复盘问题量，更新预案文档</li>
-        </ul>
-        <div class="owner">建议推进方：运营 + 客服运营协同</div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<script>
-  // ===== 导航切换 =====
-  function switchPage(name, el) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    el.classList.add('active');
-    // 延迟初始化图表（避免容器尺寸为0）
-    setTimeout(() => initCharts(name), 50);
-  }
-
-  // ===== 图表初始化 =====
-  const chartsInited = {};
-
-  function initCharts(page) {
-    if (chartsInited[page]) return;
-    chartsInited[page] = true;
-
-    const darkBg = '#161b27';
-    const textColor = '#6a8ab8';
-    const colors = ['#5a9cf8','#34c78a','#f5a623','#9b6ef5','#e74c3c','#1abc9c'];
-
-    if (page === 'overview') {
-      // 服务量构成
-      const pie1 = echarts.init(document.getElementById('chart-service-pie'));
-      pie1.setOption({
-        backgroundColor: darkBg,
-        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-        legend: { bottom: 0, textStyle: { color: textColor }, itemWidth: 10, itemHeight: 10 },
-        series: [{
-          type: 'pie', radius: ['40%','68%'], center: ['50%','45%'],
+</body>
+</html>
