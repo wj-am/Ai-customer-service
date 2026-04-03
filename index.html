@@ -382,7 +382,7 @@
 <div class="page cover-page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">01 / 10</span>
+    <span class="page-num">01 / 11</span>
   </div>
   <div class="page-body">
     <span class="cover-tag">客服数据专项分析</span>
@@ -397,10 +397,6 @@
       <div class="cover-meta-item">
         <label>分析范围</label>
         <span>充值场景（人工线 + 工单线）</span>
-      </div>
-      <div class="cover-meta-item">
-        <label>报告版本</label>
-        <span>v4 · 最终版</span>
       </div>
     </div>
     <div class="cover-badges">
@@ -435,7 +431,7 @@
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">02 / 10</span>
+    <span class="page-num">02 / 11</span>
   </div>
   <div class="page-body">
 
@@ -462,7 +458,7 @@
         <table>
           <thead><tr><th>场景</th><th>条数</th><th>占比</th></tr></thead>
           <tbody>
-            <tr><td>充值返利咨询</td><td>1,473</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:34.3%"></div></div><span class="bar-val">34.3%</span></div></td></tr>
+            <tr><td><strong class="c-red">充值返利咨询</strong></td><td><strong>1,473</strong></td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:34.3%;background:#ef4444"></div></div><span class="bar-val">34.3%</span></div></td></tr>
             <tr><td>充值方式</td><td>1,078</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:25.1%"></div></div><span class="bar-val">25.1%</span></div></td></tr>
             <tr><td>充值未到账</td><td>513</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.9%"></div></div><span class="bar-val">11.9%</span></div></td></tr>
             <tr><td>充值记录查询</td><td>492</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.5%"></div></div><span class="bar-val">11.5%</span></div></td></tr>
@@ -492,27 +488,121 @@
     <div class="conclusion-box">
       <strong>双线核心洞察：</strong>
       <ul>
+        <li><strong>充值返利咨询</strong>：人工线第一大场景（34.3%，1,473条）→ 工单仅4.0%，升级率极低，说明此类问题人工可消化，但来单量最大，是最值得通过机制优化降量的场景</li>
         <li><strong>无法充值</strong>：人工线占比最低（5.9%）→ 工单占比最高（33.1%），升级率远超其他场景，人工处理能力边界最清晰</li>
         <li><strong>充值错误</strong>：工单占比22.9%，升级核心原因是涉及退款/回声转移，需后台操作权限</li>
-        <li><strong>充值返利咨询</strong>：人工线第一大场景（34.3%）→ 工单仅4.0%，说明此类问题人工可消化，升级率极低</li>
       </ul>
     </div>
 
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>02 / 10</span>
+    <span>02 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 3 · 充值方式 1,078条
+     PAGE 3 · 充值返利咨询 1,473条  ← 新增页
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">03 / 10</span>
+    <span class="page-num">03 / 11</span>
+  </div>
+  <div class="page-body">
+
+    <div class="section-title">充值返利咨询 · 1,473条（34.3%）</div>
+    <div class="section-desc">人工线第一大场景 · 优惠券被吞 + 返利未显示是双核心痛点</div>
+
+    <div class="sub-title">一、用户在困惑什么？</div>
+    <div class="info-box">
+      参与充值返利活动时，优惠券/返利红包在<strong>未完成支付的情况下被消耗</strong>；或充值成功后<strong>活动侧数据不同步</strong>，导致返利无法领取、累充进度不刷新。
+    </div>
+
+    <div class="sub-title">二、子类问题分布</div>
+    <table>
+      <thead><tr><th>排序</th><th>子类问题</th><th>条数</th><th>占比</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong class="c-red">优惠券/折扣卡被吞（退出/取消/支付失败后消失）</strong></td><td>约542条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:36.8%;background:#ef4444"></div></div><span class="bar-val">36.8%</span></div></td></tr>
+        <tr><td>2</td><td><strong class="c-amber">充值后返利未显示/无法领取</strong></td><td>约312条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:21.2%;background:#f59e0b"></div></div><span class="bar-val">21.2%</span></div></td></tr>
+        <tr><td>3</td><td>优惠券领了用不了/充值界面不显示</td><td>约168条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:11.4%"></div></div><span class="bar-val">11.4%</span></div></td></tr>
+        <tr><td>4</td><td>无效信息/nan/闲聊/催单</td><td>约138条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:9.4%"></div></div><span class="bar-val c-gray">9.4%</span></div></td></tr>
+        <tr><td>5</td><td>充值返利活动绑定/换绑问题</td><td>约98条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:6.7%"></div></div><span class="bar-val">6.7%</span></div></td></tr>
+        <tr><td>6</td><td>优惠券状态异常（未操作自行消失/过期）</td><td>约72条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.9%"></div></div><span class="bar-val">4.9%</span></div></td></tr>
+        <tr><td>7</td><td>充值返利规则/活动咨询</td><td>约62条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:4.2%"></div></div><span class="bar-val">4.2%</span></div></td></tr>
+        <tr><td>8</td><td>充值未计入累充/返利活动</td><td>约48条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:3.3%"></div></div><span class="bar-val">3.3%</span></div></td></tr>
+        <tr><td>9</td><td>福利金/通宝使用问题</td><td>约33条</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:2.2%"></div></div><span class="bar-val">2.2%</span></div></td></tr>
+        <tr class="table-total"><td>—</td><td>合计</td><td>1,473条</td><td>100%</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-title">三、被吞触发场景 & 券类型（542条细拆）</div>
+    <div class="two-col">
+      <div class="col-card">
+        <h4>被吞触发场景分布</h4>
+        <table>
+          <thead><tr><th>触发场景</th><th>条数</th><th>占比</th></tr></thead>
+          <tbody>
+            <tr><td>选错支付方式/切换支付方式退出</td><td>约196条</td><td>36.2%</td></tr>
+            <tr><td>网卡/闪退/卡顿退出</td><td>约124条</td><td>22.9%</td></tr>
+            <tr><td>主动取消/退出支付页面</td><td>约118条</td><td>21.8%</td></tr>
+            <tr><td>支付失败（余额不足/验证码/绑卡异常）</td><td>约68条</td><td>12.5%</td></tr>
+            <tr><td>打开充值页预览未支付即消失</td><td>约36条</td><td>6.6%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-card">
+        <h4>被吞券类型分布</h4>
+        <table>
+          <thead><tr><th>券类型</th><th>条数</th></tr></thead>
+          <tbody>
+            <tr><td>7折券（含迎新礼/官服/大神7折）</td><td><strong class="c-red">约388条</strong></td></tr>
+            <tr><td>9折券</td><td>约72条</td></tr>
+            <tr><td>满6减5.9元券</td><td>约54条</td></tr>
+            <tr><td>福利金/通宝/购物金</td><td>约28条</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-title">四、关联活动/规则说明</div>
+    <table>
+      <thead><tr><th>活动/规则</th><th>关联子类</th><th>估算涉及量</th></tr></thead>
+      <tbody>
+        <tr><td>迎新礼/首充活动（7折/9折券发放）</td><td>被吞、用不了</td><td>约420条</td></tr>
+        <tr><td>每日/每周/每月累充返利</td><td>返利未显示、累充不计入</td><td>约360条</td></tr>
+        <tr><td>大神渠道专属返利</td><td>累充不计入、绑定问题</td><td>约146条</td></tr>
+        <tr><td>满6减5.9活动（满额抵扣券）</td><td>被吞</td><td>约54条</td></tr>
+        <tr><td>福利金/通宝/购物金活动</td><td>被吞、用不了</td><td>约61条</td></tr>
+      </tbody>
+    </table>
+
+    <div class="conclusion-box">
+      <strong>关键结论：</strong>
+      <ul>
+        <li><strong>优惠券被吞（542条，36.8%）</strong>是本场景最大问题，7折券约388条，占被吞总量71.5%，集中在切换支付方式和网卡场景</li>
+        <li><strong>充值返利未显示（312条，21.2%）</strong>是本场景独有高频问题，本质是大神渠道充值与游戏侧数据不同步</li>
+        <li><strong>绑定问题（98条）</strong>多因转端/转服引发，账号绑定链路缺乏用户可自助操作的换绑路径</li>
+        <li>本场景工单升级率极低（仅4.0%），说明人工可消化，但1,473条的绝对来单量意味着通过规则透明化、FAQ前置可大幅降低无效咨询</li>
+      </ul>
+    </div>
+
+  </div>
+  <div class="page-footer">
+    <span>内部资料 · 请勿外传</span>
+    <span>03 / 11</span>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════
+     PAGE 4 · 充值方式 1,078条
+════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
+    <span class="page-num">04 / 11</span>
   </div>
   <div class="page-body">
 
@@ -577,18 +667,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>03 / 10</span>
+    <span>04 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 4 · 充值未到账 513条
+     PAGE 5 · 充值未到账 513条
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">04 / 10</span>
+    <span class="page-num">05 / 11</span>
   </div>
   <div class="page-body">
 
@@ -653,18 +743,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>04 / 10</span>
+    <span>05 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 5 · 充值记录查询 492条
+     PAGE 6 · 充值记录查询 492条
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">05 / 10</span>
+    <span class="page-num">06 / 11</span>
   </div>
   <div class="page-body">
 
@@ -713,18 +803,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>05 / 10</span>
+    <span>06 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 6 · 充值错误 485条 + 无法充值 252条
+     PAGE 7 · 充值错误 485条 + 无法充值 252条
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">06 / 10</span>
+    <span class="page-num">07 / 11</span>
   </div>
   <div class="page-body">
 
@@ -776,18 +866,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>06 / 10</span>
+    <span>07 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 7 · 工单线专项分析
+     PAGE 8 · 工单线专项分析
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">07 / 10</span>
+    <span class="page-num">08 / 11</span>
   </div>
   <div class="page-body">
 
@@ -873,18 +963,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>07 / 10</span>
+    <span>08 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 8 · 跨场景专题：优惠券被吞全景
+     PAGE 9 · 跨场景专题：优惠券被吞全景
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">08 / 10</span>
+    <span class="page-num">09 / 11</span>
   </div>
   <div class="page-body">
 
@@ -968,18 +1058,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>08 / 10</span>
+    <span>09 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 9 · 行动建议
+     PAGE 10 · 行动建议
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">09 / 10</span>
+    <span class="page-num">10 / 11</span>
   </div>
   <div class="page-body">
 
@@ -1053,9 +1143,15 @@
         </tr>
         <tr>
           <td><span class="priority-mid">P1</span></td>
-          <td>充值返利规则不清晰</td>
-          <td>充值返利咨询1,473条，34.3%最高</td>
-          <td>优化充值助手内返利活动规则展示；增加"大神充值是否计入累充"等高频FAQ的前置说明</td>
+          <td>充值返利规则不清晰 + 数据不同步</td>
+          <td>充值返利咨询1,473条（34.3%），返利未显示312条</td>
+          <td>优化充值助手内返利活动规则展示；增加累充进度实时显示、结算时间标注；补充大神充值是否计入累充等高频FAQ前置说明</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>活动绑定/换绑路径缺失</td>
+          <td>绑定问题约98条</td>
+          <td>新增用户可自助操作的活动换绑路径；在转端/转服场景增加绑定状态提示</td>
         </tr>
       </tbody>
     </table>
@@ -1068,6 +1164,11 @@
           <td><span class="priority-high">P0</span></td>
           <td>券被吞补发权限</td>
           <td>评估开放人工一线券补发权限（至少7折迎新礼/满6减5.9元券），减少因补发需求升级工单的约15条工单量</td>
+        </tr>
+        <tr>
+          <td><span class="priority-mid">P1</span></td>
+          <td>充值返利规则类咨询——机器人承接</td>
+          <td>充值返利规则/活动咨询（约62条）+ 充值未计入累充（约48条）答案固定，适合由机器人/FAQ承接，释放人工资源</td>
         </tr>
         <tr>
           <td><span class="priority-mid">P1</span></td>
@@ -1085,18 +1186,18 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>09 / 10</span>
+    <span>10 / 11</span>
   </div>
 </div>
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 10 · 总结
+     PAGE 11 · 总结
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
     <span class="report-title">第五人格 · 充值场景客服专项分析报告</span>
-    <span class="page-num">10 / 10</span>
+    <span class="page-num">11 / 11</span>
   </div>
   <div class="page-body">
 
@@ -1110,9 +1211,9 @@
         <div class="desc">跨场景去重后约1,076条，占有效样本25.1%，7折迎新礼受损最重，根因是支付中断后券状态未回滚，是优先级最高的修复方向</div>
       </div>
       <div class="insight-card">
-        <div class="num" style="font-size:18px;">充值路径断点</div>
-        <div class="num-label">第二大问题集群</div>
-        <div class="desc">待支付订单找不到（约218条）+ 充值入口找不到（112条）= 约330条，属于充值路径设计问题，用户在流程中断后无法自助续接</div>
+        <div class="num" style="font-size:18px;">充值返利咨询</div>
+        <div class="num-label">来单量最大场景</div>
+        <div class="desc">1,473条占34.3%，工单升级率仅4%，说明人工可消化但规则透明度不足；通过返利数据同步优化+FAQ前置可大幅降量</div>
       </div>
       <div class="insight-card">
         <div class="num" style="font-size:18px;">工单升级三大根因</div>
@@ -1143,6 +1244,7 @@
         <tr><td><span class="priority-high">P0</span></td><td>修复支付中断后优惠券状态未回滚的技术问题</td><td>产品 + 技术</td><td>约1,076条</td></tr>
         <tr><td><span class="priority-high">P0</span></td><td>在产品修复前建立7折迎新礼被吞快速补发SOP</td><td>运营 + 客服</td><td>约680条</td></tr>
         <tr><td><span class="priority-high">P0</span></td><td>增加"待支付订单"明确入口 + 退出前提示弹窗</td><td>产品</td><td>约218条</td></tr>
+        <tr><td><span class="priority-mid">P1</span></td><td>优化返利活动规则展示 + 累充进度可视化 + FAQ前置</td><td>运营</td><td>约1,473条降量</td></tr>
         <tr><td><span class="priority-mid">P1</span></td><td>排查大神充值→游戏侧到账链路稳定性</td><td>技术 + 产品</td><td>约126条</td></tr>
         <tr><td><span class="priority-mid">P1</span></td><td>开放人工一线券补发权限（7折/满6减5.9）</td><td>客服 + 运营</td><td>降低工单约15条+</td></tr>
         <tr><td><span class="priority-mid">P1</span></td><td>优化充值入口可见性（大神App/iOS/小程序）</td><td>产品</td><td>约112条</td></tr>
@@ -1159,7 +1261,7 @@
   </div>
   <div class="page-footer">
     <span>内部资料 · 请勿外传</span>
-    <span>10 / 10</span>
+    <span>11 / 11</span>
   </div>
 </div>
 
