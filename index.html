@@ -359,6 +359,80 @@
     .priority-mid  { background: #fef9c3; color: #854d0e; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
     .priority-low  { background: #d1fae5; color: #065f46; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
 
+    /* ── 下一步行动清单卡片 ── */
+    .action-item {
+      display: flex;
+      gap: 16px;
+      border-radius: 10px;
+      padding: 18px 20px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      border-left: 4px solid #4f46e5;
+      background: #f8f7ff;
+      transition: box-shadow 0.2s;
+    }
+    .action-item:hover {
+      box-shadow: 0 4px 16px rgba(79,70,229,0.10);
+    }
+    .action-item-num {
+      min-width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .action-item-body {
+      flex: 1;
+    }
+    .action-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 8px;
+    }
+    .action-item-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 5px;
+      flex-wrap: wrap;
+    }
+    .action-item-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .tag-problem { background: #fee2e2; color: #b91c1c; }
+    .tag-solution { background: #dcfce7; color: #15803d; }
+    .action-item-text {
+      font-size: 13px;
+      color: #4b5563;
+      line-height: 1.6;
+    }
+    .action-item-owner {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .owner-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
     /* ── 页脚 ── */
     .page-footer {
       border-top: 1px solid #f3f4f6;
@@ -503,7 +577,7 @@
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 3 · 充值返利咨询 1,473条  ← 新增页
+     PAGE 3 · 充值返利咨询 1,473条
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
@@ -1064,7 +1138,7 @@
 
 
 <!-- ════════════════════════════════════════════
-     PAGE 10 · 行动建议
+     PAGE 10 · 行动建议 & 下一步行动清单
 ════════════════════════════════════════════ -->
 <div class="page">
   <div class="page-header">
@@ -1073,115 +1147,103 @@
   </div>
   <div class="page-body">
 
-    <div class="section-title">行动建议</div>
-    <div class="section-desc">基于数据优先级排序 · 分产品/运营/客服三个维度</div>
+    <div class="section-title">行动建议 · 下一步行动清单</div>
+    <div class="section-desc">基于数据与问题复盘 · 5项落地行动方向</div>
 
-    <div class="sub-title">一、产品侧行动项</div>
-    <table class="action-table">
-      <thead><tr><th>优先级</th><th>问题</th><th>数据依据</th><th>具体行动</th><th>预期收益</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><span class="priority-high">P0</span></td>
-          <td>优惠券被吞 — 支付中断后状态未回滚</td>
-          <td>约1,076条，占有效样本25.1%</td>
-          <td>修复支付流程中断（切换支付方式/网卡/主动取消/支付失败）后券状态回滚逻辑，确保券在未完成支付时不被标记为"已使用"</td>
-          <td>直接减少约1,076条投诉；改善新用户首充体验</td>
-        </tr>
-        <tr>
-          <td><span class="priority-high">P0</span></td>
-          <td>待支付订单找不到</td>
-          <td>跨场景合计约218条</td>
-          <td>在充值助手/大神App增加"待支付订单"明确入口；退出支付页前增加提示弹窗"是否放弃本次支付"</td>
-          <td>减少约218条流量；减少因找不到订单导致的重复充值</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>充值入口找不到</td>
-          <td>约112条</td>
-          <td>优化大神App/iOS/小程序充值入口的可见性和路径层级；增加充值助手首页快捷入口</td>
-          <td>减少约112条基础咨询量；降低新用户操作门槛</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>充值成功但道具未到账（大神渠道为主）</td>
-          <td>约126条，大神渠道约52条</td>
-          <td>排查大神充值→游戏侧到账链路的稳定性问题；增加到账状态实时反馈；建立异常到账自动补发机制</td>
-          <td>减少约126条投诉；提升大神渠道充值可信度</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>累充/消费未计入活动</td>
-          <td>约48+48=96条（未到账+充值返利）</td>
-          <td>排查大神充值/小程序充值与游戏侧累充数据的同步延迟；增加同步状态提示（"充值已同步，活动进度将在X分钟内更新"）</td>
-          <td>减少约96条投诉；降低用户因数据延迟产生的误判</td>
-        </tr>
-        <tr>
-          <td><span class="priority-low">P2</span></td>
-          <td>误触快速支付/充错金额</td>
-          <td>约112条</td>
-          <td>在快速支付/一键充值前增加二次确认弹窗（金额、账号、券使用情况）</td>
-          <td>减少约112条充值错误投诉；降低工单退款量</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- 行动项 1 -->
+    <div class="action-item" style="border-left-color:#4f46e5; background:#f8f7ff;">
+      <div class="action-item-num" style="background:#4f46e5;">1</div>
+      <div class="action-item-body">
+        <div class="action-item-title">大神未完成订单支付入口提醒</div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-problem">问题</span>
+          <span class="action-item-text">目前大神的支付状态只能通过右上角入口进入，用户链路过长；特殊节点引发大量优惠券被吞咨询</span>
+        </div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-solution">方案</span>
+          <span class="action-item-text">大神产品开发订单支付状态提醒悬浮窗或红点，点击直达订单支付状态页</span>
+        </div>
+      </div>
+      <div class="action-item-owner">
+        <span class="owner-tag" style="background:#ede9fe; color:#4f46e5;">大神产品</span>
+      </div>
+    </div>
 
-    <div class="sub-title">二、运营侧行动项</div>
-    <table class="action-table">
-      <thead><tr><th>优先级</th><th>问题</th><th>数据依据</th><th>具体行动</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><span class="priority-high">P0</span></td>
-          <td>7折迎新礼被吞</td>
-          <td>约680条涉及7折券，是被吞最重券种</td>
-          <td>在产品修复前，建立迎新礼7折券被吞的快速补发SOP；用户反馈被吞后可提供自助补发或客服一键补发</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>满6减5.9元券被吞影响累充进度</td>
-          <td>约158条，复合损失（券+累充进度）</td>
-          <td>针对满6减5.9元券被吞场景，补发券的同时核查累充进度是否受影响；建立联动补偿机制</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>充值返利规则不清晰 + 数据不同步</td>
-          <td>充值返利咨询1,473条（34.3%），返利未显示312条</td>
-          <td>优化充值助手内返利活动规则展示；增加累充进度实时显示、结算时间标注；补充大神充值是否计入累充等高频FAQ前置说明</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>活动绑定/换绑路径缺失</td>
-          <td>绑定问题约98条</td>
-          <td>新增用户可自助操作的活动换绑路径；在转端/转服场景增加绑定状态提示</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- 行动项 2 -->
+    <div class="action-item" style="border-left-color:#7c3aed; background:#faf5ff;">
+      <div class="action-item-num" style="background:#7c3aed;">2</div>
+      <div class="action-item-body">
+        <div class="action-item-title">在线客服无法发送大神充值助手链接</div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-problem">问题</span>
+          <span class="action-item-text">目前大神 App 没有办法直接弹出充值助手链接，玩家频繁询问充值链接获取方式</span>
+        </div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-solution">方案</span>
+          <span class="action-item-text">以合规方式实现链接跳转，可通过公众号或小程序承载充值助手入口</span>
+        </div>
+      </div>
+      <div class="action-item-owner">
+        <span class="owner-tag" style="background:#f3e8ff; color:#7c3aed;">大神产品 · 合规</span>
+      </div>
+    </div>
 
-    <div class="sub-title">三、客服侧行动项</div>
-    <table class="action-table">
-      <thead><tr><th>优先级</th><th>问题</th><th>具体行动</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><span class="priority-high">P0</span></td>
-          <td>券被吞补发权限</td>
-          <td>评估开放人工一线券补发权限（至少7折迎新礼/满6减5.9元券），减少因补发需求升级工单的约15条工单量</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>充值返利规则类咨询——机器人承接</td>
-          <td>充值返利规则/活动咨询（约62条）+ 充值未计入累充（约48条）答案固定，适合由机器人/FAQ承接，释放人工资源</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>充值成功未到账 — 快速核查工具</td>
-          <td>为客服提供支付流水与游戏到账记录的快速核查工具，减少因无权限核查导致的工单升级（约76条）</td>
-        </tr>
-        <tr>
-          <td><span class="priority-mid">P1</span></td>
-          <td>账号风控场景话术优化</td>
-          <td>针对"账号有安全隐患/存在风险"场景（约28条），优化客服话术，明确告知解除路径和预计时间，减少用户反复追问</td>
-        </tr>
-      </tbody>
-    </table>
+    <!-- 行动项 3 -->
+    <div class="action-item" style="border-left-color:#0891b2; background:#f0f9ff;">
+      <div class="action-item-num" style="background:#0891b2;">3</div>
+      <div class="action-item-body">
+        <div class="action-item-title">每期活动规则 FAQ 同步至天书知识库</div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-problem">问题</span>
+          <span class="action-item-text">每期活动带来不同的充值咨询，天书知识库无法自动回复，导致大量人工询问</span>
+        </div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-solution">方案</span>
+          <span class="action-item-text">提前向客服侧传达活动规则，活动上线前同步更新天书知识库，确保机器人可承接常规咨询</span>
+        </div>
+      </div>
+      <div class="action-item-owner">
+        <span class="owner-tag" style="background:#e0f2fe; color:#0369a1;">运营 · 客服</span>
+      </div>
+    </div>
+
+    <!-- 行动项 4 -->
+    <div class="action-item" style="border-left-color:#d97706; background:#fffbeb;">
+      <div class="action-item-num" style="background:#d97706;">4</div>
+      <div class="action-item-body">
+        <div class="action-item-title">分享福利金活动定时更新</div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-problem">问题</span>
+          <span class="action-item-text">分享福利金活动目前只能人工手动上线，月底刷新时间不固定；玩家在月底领取后次月无法再次领取，带来较多人工咨询</span>
+        </div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-solution">方案</span>
+          <span class="action-item-text">大神产品上线定时活动更新功能，实现分享福利金等周期性活动的自动刷新，减少因时间差产生的误解</span>
+        </div>
+      </div>
+      <div class="action-item-owner">
+        <span class="owner-tag" style="background:#fef3c7; color:#92400e;">大神产品</span>
+      </div>
+    </div>
+
+    <!-- 行动项 5 -->
+    <div class="action-item" style="border-left-color:#059669; background:#f0fdf4;">
+      <div class="action-item-num" style="background:#059669;">5</div>
+      <div class="action-item-body">
+        <div class="action-item-title">自动查询无法充值原因 Skill</div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-problem">问题</span>
+          <span class="action-item-text">人工客服面临较多玩家询问无法充值的原因，排查链路长、效率低</span>
+        </div>
+        <div class="action-item-row">
+          <span class="action-item-tag tag-solution">方案</span>
+          <span class="action-item-text">上线自动查询 Skill，帮助客服秒级锁定玩家无法充值的具体原因（风控/渠道限制/系统异常等），提升处理效率</span>
+        </div>
+      </div>
+      <div class="action-item-owner">
+        <span class="owner-tag" style="background:#dcfce7; color:#065f46;">客服 · 技术</span>
+      </div>
+    </div>
 
   </div>
   <div class="page-footer">
@@ -1237,20 +1299,40 @@
       </tbody>
     </table>
 
-    <div class="sub-title">优先级行动清单（汇总）</div>
+    <div class="sub-title">下一步行动清单（汇总）</div>
     <table class="action-table">
-      <thead><tr><th>优先级</th><th>行动项</th><th>负责方</th><th>影响量级</th></tr></thead>
+      <thead><tr><th>编号</th><th>行动项</th><th>负责方</th><th>核心目标</th></tr></thead>
       <tbody>
-        <tr><td><span class="priority-high">P0</span></td><td>修复支付中断后优惠券状态未回滚的技术问题</td><td>产品 + 技术</td><td>约1,076条</td></tr>
-        <tr><td><span class="priority-high">P0</span></td><td>在产品修复前建立7折迎新礼被吞快速补发SOP</td><td>运营 + 客服</td><td>约680条</td></tr>
-        <tr><td><span class="priority-high">P0</span></td><td>增加"待支付订单"明确入口 + 退出前提示弹窗</td><td>产品</td><td>约218条</td></tr>
-        <tr><td><span class="priority-mid">P1</span></td><td>优化返利活动规则展示 + 累充进度可视化 + FAQ前置</td><td>运营</td><td>约1,473条降量</td></tr>
-        <tr><td><span class="priority-mid">P1</span></td><td>排查大神充值→游戏侧到账链路稳定性</td><td>技术 + 产品</td><td>约126条</td></tr>
-        <tr><td><span class="priority-mid">P1</span></td><td>开放人工一线券补发权限（7折/满6减5.9）</td><td>客服 + 运营</td><td>降低工单约15条+</td></tr>
-        <tr><td><span class="priority-mid">P1</span></td><td>优化充值入口可见性（大神App/iOS/小程序）</td><td>产品</td><td>约112条</td></tr>
-        <tr><td><span class="priority-mid">P1</span></td><td>大神充值与游戏侧累充数据同步延迟修复</td><td>技术</td><td>约96条</td></tr>
-        <tr><td><span class="priority-low">P2</span></td><td>快速支付增加二次确认弹窗</td><td>产品</td><td>约112条</td></tr>
-        <tr><td><span class="priority-low">P2</span></td><td>账号风控场景客服话术优化</td><td>客服</td><td>约28条</td></tr>
+        <tr>
+          <td><span style="background:#ede9fe;color:#4f46e5;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">NO.1</span></td>
+          <td>大神未完成订单支付入口提醒（悬浮窗/红点）</td>
+          <td>大神产品</td>
+          <td>缩短支付链路，减少因找不到订单导致的优惠券被吞咨询</td>
+        </tr>
+        <tr>
+          <td><span style="background:#f3e8ff;color:#7c3aed;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">NO.2</span></td>
+          <td>在线客服发送充值助手链接（公众号/小程序合规跳转）</td>
+          <td>大神产品 · 合规</td>
+          <td>解决客服无法直接推送充值入口的问题</td>
+        </tr>
+        <tr>
+          <td><span style="background:#e0f2fe;color:#0369a1;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">NO.3</span></td>
+          <td>每期活动规则 FAQ 提前同步天书知识库</td>
+          <td>运营 · 客服</td>
+          <td>机器人承接活动规则咨询，释放人工资源</td>
+        </tr>
+        <tr>
+          <td><span style="background:#fef3c7;color:#92400e;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">NO.4</span></td>
+          <td>分享福利金活动定时自动更新功能上线</td>
+          <td>大神产品</td>
+          <td>消除月底刷新时间不固定带来的周期性咨询高峰</td>
+        </tr>
+        <tr>
+          <td><span style="background:#dcfce7;color:#065f46;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">NO.5</span></td>
+          <td>上线无法充值原因自动查询 Skill</td>
+          <td>客服 · 技术</td>
+          <td>帮助客服秒级定位无法充值原因，提升处理效率</td>
+        </tr>
       </tbody>
     </table>
 
